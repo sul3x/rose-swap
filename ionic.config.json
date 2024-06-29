@@ -1,0 +1,7 @@
+{
+  "name": "rose-swap",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
