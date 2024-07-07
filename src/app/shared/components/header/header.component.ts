@@ -2,33 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {AuthService} from "../../../services/auth.service";
 import {Router} from "@angular/router";
+import {SideMenuComponent} from "../side-menu/side-menu.component";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [
-    IonicModule
+    IonicModule,
+    SideMenuComponent
   ],
   standalone: true
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(
-    private router: Router,
-    private authService: AuthService) { }
+  constructor() { }
 
   ngOnInit() {
     console.log('header works')
   }
 
-  async logout() {
-    try {
-      await this.authService.logout();
-      console.log('Logged out successfully');
-      this.router.navigate(['/login']); // Redirect to login or any other page
-    } catch (error) {
-      console.error('Logout error', error);
-    }
-  }
+
 }
