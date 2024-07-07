@@ -7,6 +7,8 @@ import {routes} from './app/app.routes';
 import {AppComponent} from './app/app.component';
 import {environment} from './environments/environment';
 import {provideHttpClient} from "@angular/common/http";
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 if (environment.production) {
   enableProdMode();
@@ -17,6 +19,6 @@ bootstrapApplication(AppComponent, {
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient()
+    provideHttpClient(), provideFirebaseApp(() => initializeApp({"projectId":"rose-swap","appId":"1:571055760262:web:2848d24ef94983f6c34207","storageBucket":"rose-swap.appspot.com","apiKey":"AIzaSyBOmLFE0gv9EmHKEufhnIGyGObJx5p--nw","authDomain":"rose-swap.firebaseapp.com","messagingSenderId":"571055760262","measurementId":"G-2BY6HGVKSS"})), provideAuth(() => getAuth())
   ],
 });
