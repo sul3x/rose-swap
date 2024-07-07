@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {IonicModule} from "@ionic/angular";
+import {AuthService} from "../../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -12,9 +14,21 @@ import {IonicModule} from "@ionic/angular";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private authService: AuthService) { }
 
   ngOnInit() {
     console.log('header works')
+  }
+
+  async logout() {
+    try {
+      await this.authService.logout();
+      console.log('Logged out successfully');
+      this.router.navigate(['/login']); // Redirect to login or any other page
+    } catch (error) {
+      console.error('Logout error', error);
+    }
   }
 }
