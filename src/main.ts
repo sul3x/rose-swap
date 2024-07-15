@@ -9,6 +9,9 @@ import {environment} from './environments/environment';
 import {provideHttpClient} from "@angular/common/http";
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
+defineCustomElements(window);
 
 if (environment.production) {
   enableProdMode();
