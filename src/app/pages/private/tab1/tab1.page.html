@@ -11,6 +11,14 @@
     <ion-toolbar>
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
+    <ion-row>
+      <ion-list>
+        <ion-item>
+          <ion-button id="present-alert" (click)="initializeAlertInput()">Add New Rose</ion-button>
+          <ion-alert trigger="present-alert" header="Info about New Rose" [buttons]="alertButtons" [inputs]="alertInputs"></ion-alert>
+        </ion-item>
+      </ion-list>
+    </ion-row>
   </ion-header>
 
 </ion-content>
