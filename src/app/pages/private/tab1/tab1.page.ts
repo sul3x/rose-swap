@@ -7,11 +7,13 @@ import {
   IonRow,
   IonList,
   IonItem,
-  IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol
+  IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, Platform
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
 import {IRose} from "../../../model/interfaces";
+import {Directory, Filesystem, ReadFileResult, WriteFileResult} from "@capacitor/filesystem";
+import {Capacitor} from "@capacitor/core";
 
 @Component({
   selector: 'app-tab1',
@@ -23,20 +25,24 @@ import {IRose} from "../../../model/interfaces";
 
 export class Tab1Page implements OnInit {
 
-  public alertButtons = [{}];
-  public alertInputs = [{}];
+  public alertButtons: {}[] = [{}];
+  public alertInputs:{}[] = [{}];
   public capturedRose: Photo;
   myRoseGardenService: MyRoseGardenService = inject(MyRoseGardenService);
-  myGarden: IRose[] = [];
+  public myGarden: IRose[] = [];
+  private platform: Platform;
 
-  constructor() {}
+  constructor(platform: Platform) {
+    this.platform = platform;
+  }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getMyGarden();
     console.log('Initialize roses variable');
     this.initializeAlertInput();
   }
 
-  initializeAlertInput() {
+  initializeAlertInput(): void {
     this.alertButtons = [
       {
         text: 'Photo',
@@ -47,9 +53,9 @@ export class Tab1Page implements OnInit {
       },
       {
         text: 'OK:)',
-        handler: (data) => {
-          data.image = this.capturedRose;
-          this.saveRose(data);
+        handler: (rose: IRose) => {
+          rose.photo = this.capturedRose;
+          this.saveRose(rose);
           this.capturedRose = null;
         }
       },
@@ -71,15 +77,15 @@ export class Tab1Page implements OnInit {
     ];
   }
 
-  getMyGarden() {
+  getMyGarden(): void {
     this.myGarden = this.myRoseGardenService.getMyGarden();
+    console.log('my garden', this.myGarden);
   }
 
-  saveRose(rose: IRose) {
-    console.log("Register new rose: ", rose)
-
+  saveRose(rose: IRose): void {
     try {
       this.myRoseGardenService.setRose(rose);
+      console.log("Registered new rose: ", rose);
     } catch (error) {
       console.error("Error saving rose: ", error)
     }
@@ -87,7 +93,58 @@ export class Tab1Page implements OnInit {
     try {
       this.getMyGarden();
     } catch (error) {
-      console.error("Error showing my garden.")
+      console.error("Error getting my garden")
     }
   }
+
+  /*
+  // SHOW PHOTO
+  private async saveNewPhotoRose(photo: Photo) {
+    const base64Data = await this.readAsBase64(photo);
+
+    const fileName: string = Date.now() + '.jpeg';
+    const savedFile: WriteFileResult = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Data
+    });
+
+    if (this.platform.is('hybrid')) {
+      return {
+        filepath: savedFile.uri,
+        webviewPath: Capacitor.convertFileSrc(savedFile.uri)
+      };
+    }
+
+    return {
+      filepath: fileName,
+      webviewPath: photo.webPath
+    };
+  }
+
+  private async readAsBase64(photo: Photo) {
+    if (this.platform.is('hybrid')) {
+      const file: ReadFileResult = await Filesystem.readFile({
+        path: photo.path!
+      });
+
+      return file.data;
+    }
+    else {
+
+      const response: Response = await fetch(photo.webPath!);
+      const blob: Blob = await response.blob();
+
+      return await this.convertBlobToBase64(blob) as string;
+    }
+  }
+
+  private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
+    const reader: FileReader = new FileReader();
+    reader.onerror = reject;
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsDataURL(blob);
+  });*/
 }

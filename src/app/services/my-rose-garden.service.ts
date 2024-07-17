@@ -8,25 +8,25 @@ import {IRose} from "../model/interfaces";
 export class MyRoseGardenService {
 
   constructor() {
-    console.log('RosesService initialized')
+    console.log('RosesService initialized');
   }
 
   getMyGarden(): IRose[] {
 
-    const roses = window.localStorage.getItem("roses");
+    const roses: string = window.localStorage.getItem("roses");
 
     if (roses) {
-      console.log("Roses isn't null.");
+      console.log("My garden isn't null.");
       const parsedRoses = JSON.parse(roses);
       return parsedRoses;
     } else {
-      console.log("Roses is null.")
+      console.log("My garden is null.")
       return [];
     }
   }
 
-  setRose(rose: IRose) {
-    const myGarden = this.getMyGarden();
+  setRose(rose: IRose): void {
+    const myGarden: IRose[] = this.getMyGarden();
 
     console.log("Adding new rose: ", rose);
 
@@ -36,14 +36,14 @@ export class MyRoseGardenService {
 
 
   deleteRose(index: number, rose_delete: IRose) {
-    const myGarden = this.getMyGarden();
+    const myGarden: IRose[] = this.getMyGarden();
     console.log("Deleting rose: ", rose_delete);
     myGarden.splice(index,1);
     this.saveMyGarden(myGarden);
   }
 
   saveChangesRose(index: number, modified_rose: IRose) {
-    const myGarden = this.getMyGarden();
+    const myGarden: IRose[] = this.getMyGarden();
     myGarden[index] = modified_rose;
     this.saveMyGarden(myGarden);
   }
@@ -52,8 +52,8 @@ export class MyRoseGardenService {
     window.localStorage.setItem('roses', JSON.stringify(myGarden))
   }
 
-  getRoseByIndex(index: number) {
-    const myGarden = this.getMyGarden();
+  getRoseByIndex(index: number): IRose {
+    const myGarden: IRose[] = this.getMyGarden();
 
     if (index >= 0 && index < myGarden.length) {
       return myGarden[index];
@@ -64,7 +64,7 @@ export class MyRoseGardenService {
   }
 
   public async addNewPhotoRose(): Promise<Photo> {
-    const capturedNewRose = await Camera.getPhoto({
+    const capturedNewRose: Photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
       quality: 100

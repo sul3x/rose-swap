@@ -21,24 +21,26 @@
         </ion-item>
         <!-- SHOW MY GARDEN -->
         <ion-item>
-          <ion-list>
-            @for (rose of myGarden; track rose) {
+          <ion-row>
+            <ion-list>
+              @for (rose of myGarden; track rose) {
                 <ion-row>
                   <ion-col>
-                    <ion-img [src]="rose.photo" width="200" height="200" alt="rose"></ion-img>
+                    <ion-img [src]="rose.photo.dataUrl" width="200" height="200" alt="rose"></ion-img>
                   </ion-col>
                   <ion-col>
                     Name: {{rose.name}}
                   </ion-col>
                   <ion-col>
-                    Intensity Fragrance: {{rose.intensityFragrance}}
+                    Fragrance: {{rose.intensityFragrance}}
                   </ion-col>
                   <ion-col>
-                    More Info: {{rose.moreInfo}}
+                    Info: {{rose.moreInfo}}
                   </ion-col>
                 </ion-row>
-            }
-          </ion-list>
+              }
+            </ion-list>
+          </ion-row>
         </ion-item>
       </ion-list>
     </ion-row>
