@@ -6,6 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
+
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
@@ -13,12 +14,33 @@
     </ion-toolbar>
     <ion-row>
       <ion-list>
+        <!-- ADD NEW ROSE -->
         <ion-item>
           <ion-button id="present-alert" (click)="initializeAlertInput()">Add New Rose</ion-button>
           <ion-alert trigger="present-alert" header="Info about New Rose" [buttons]="alertButtons" [inputs]="alertInputs"></ion-alert>
         </ion-item>
+        <!-- SHOW MY GARDEN -->
+        <ion-item>
+          <ion-list>
+            @for (rose of myGarden; track rose) {
+                <ion-row>
+                  <ion-col>
+                    <ion-img [src]="rose.photo" width="200" height="200" alt="rose"></ion-img>
+                  </ion-col>
+                  <ion-col>
+                    Name: {{rose.name}}
+                  </ion-col>
+                  <ion-col>
+                    Intensity Fragrance: {{rose.intensityFragrance}}
+                  </ion-col>
+                  <ion-col>
+                    More Info: {{rose.moreInfo}}
+                  </ion-col>
+                </ion-row>
+            }
+          </ion-list>
+        </ion-item>
       </ion-list>
     </ion-row>
   </ion-header>
-
 </ion-content>

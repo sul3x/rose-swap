@@ -7,7 +7,7 @@ import {
   IonRow,
   IonList,
   IonItem,
-  IonLabel, IonButton, IonAlert, IonInput
+  IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
@@ -18,7 +18,7 @@ import {IRose} from "../../../model/interfaces";
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol],
 })
 
 export class Tab1Page implements OnInit {
