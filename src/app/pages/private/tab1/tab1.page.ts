@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -11,6 +11,7 @@ import {
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
+import {IRose} from "../../../model/interfaces";
 
 @Component({
   selector: 'app-tab1',
@@ -19,12 +20,21 @@ import {Photo} from "@capacitor/camera";
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput],
 })
-export class Tab1Page {
-  constructor(public myRoseGardenService: MyRoseGardenService) {}
+
+export class Tab1Page implements OnInit {
 
   public alertButtons = [{}];
   public alertInputs = [{}];
   public capturedRose: Photo;
+  myRoseGardenService: MyRoseGardenService = inject(MyRoseGardenService);
+  myGarden: IRose[] = [];
+
+  constructor() {}
+
+  ngOnInit() {
+    console.log('Initialize roses variable');
+    this.initializeAlertInput();
+  }
 
   initializeAlertInput() {
     this.alertButtons = [
@@ -39,7 +49,7 @@ export class Tab1Page {
         text: 'OK:)',
         handler: (data) => {
           data.image = this.capturedRose;
-          this.saveNewRoseInput(data);
+          this.saveRose(data);
           this.capturedRose = null;
         }
       },
@@ -61,10 +71,23 @@ export class Tab1Page {
     ];
   }
 
-  public userNewRoseEntries: any[] = [];
+  getMyGarden() {
+    this.myGarden = this.myRoseGardenService.getMyGarden();
+  }
 
-  saveNewRoseInput(data: any) {
-    this.userNewRoseEntries.push(data);
-    console.log('new rose inputs: ', this.userNewRoseEntries);
+  saveRose(rose: IRose) {
+    console.log("Register new rose: ", rose)
+
+    try {
+      this.myRoseGardenService.setRose(rose);
+    } catch (error) {
+      console.error("Error saving rose: ", error)
+    }
+
+    try {
+      this.getMyGarden();
+    } catch (error) {
+      console.error("Error showing my garden.")
+    }
   }
 }
