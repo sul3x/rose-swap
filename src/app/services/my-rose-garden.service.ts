@@ -13,25 +13,23 @@ export class MyRoseGardenService {
 
   getMyGarden(): IRose[] {
 
-    const roses: string = window.localStorage.getItem("roses");
+    const myGardenLocalStorage: string = window.localStorage.getItem('myGardenLocalStorage');
 
-    if (roses) {
-      console.log("My garden isn't null.");
-      const parsedRoses = JSON.parse(roses);
+    if (myGardenLocalStorage) {
+      console.log('My garden isn\'t null.');
+      const parsedRoses = JSON.parse(myGardenLocalStorage);
       return parsedRoses;
     } else {
-      console.log("My garden is null.")
+      console.log('My garden is null.')
       return [];
     }
   }
 
   setRose(rose: IRose): void {
     const myGarden: IRose[] = this.getMyGarden();
-
-    console.log("Adding new rose: ", rose);
-
     myGarden.push(rose);
     this.saveMyGarden(myGarden);
+    console.log('Updated garden after adding new rose: ', myGarden);
   }
 
 
@@ -49,7 +47,8 @@ export class MyRoseGardenService {
   }
 
   private saveMyGarden(myGarden: IRose[]) {
-    window.localStorage.setItem('roses', JSON.stringify(myGarden))
+    window.localStorage.setItem('myGardenLocalStorage', JSON.stringify(myGarden));
+    console.log('Saved garden to local storage: ', myGarden);
   }
 
   getRoseByIndex(index: number): IRose {
@@ -69,6 +68,7 @@ export class MyRoseGardenService {
       source: CameraSource.Camera,
       quality: 100
     });
+    console.log('Captured new rose photo: ', capturedNewRose);
     return capturedNewRose;
   }
 

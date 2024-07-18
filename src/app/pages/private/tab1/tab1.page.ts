@@ -12,8 +12,7 @@ import {
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
 import {IRose} from "../../../model/interfaces";
-import {Directory, Filesystem, ReadFileResult, WriteFileResult} from "@capacitor/filesystem";
-import {Capacitor} from "@capacitor/core";
+
 
 @Component({
   selector: 'app-tab1',
@@ -37,8 +36,8 @@ export class Tab1Page implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Initialize myGarden variable');
     this.getMyGarden();
-    console.log('Initialize roses variable');
     this.initializeAlertInput();
   }
 
@@ -46,14 +45,15 @@ export class Tab1Page implements OnInit {
     this.alertButtons = [
       {
         text: 'Photo',
-        handler: async () => {
+        handler: async (): Promise<boolean> => {
           this.capturedRose = await this.myRoseGardenService.addNewPhotoRose();
           return false;
         }
       },
       {
         text: 'OK:)',
-        handler: (rose: IRose) => {
+        handler: (rose: IRose): void => {
+          console.log('Alert input values: ', rose);
           rose.photo = this.capturedRose;
           this.saveRose(rose);
           this.capturedRose = null;
@@ -79,72 +79,20 @@ export class Tab1Page implements OnInit {
 
   getMyGarden(): void {
     this.myGarden = this.myRoseGardenService.getMyGarden();
-    console.log('my garden', this.myGarden);
   }
 
   saveRose(rose: IRose): void {
     try {
+      console.log('My Garden before add new rose: ', this.myGarden);
       this.myRoseGardenService.setRose(rose);
-      console.log("Registered new rose: ", rose);
     } catch (error) {
-      console.error("Error saving rose: ", error)
+      console.error('Error saving rose: ', error);
     }
 
     try {
       this.getMyGarden();
     } catch (error) {
-      console.error("Error getting my garden")
+      console.error('Error getting my garden');
     }
   }
-
-  /*
-  // SHOW PHOTO
-  private async saveNewPhotoRose(photo: Photo) {
-    const base64Data = await this.readAsBase64(photo);
-
-    const fileName: string = Date.now() + '.jpeg';
-    const savedFile: WriteFileResult = await Filesystem.writeFile({
-      path: fileName,
-      data: base64Data,
-      directory: Directory.Data
-    });
-
-    if (this.platform.is('hybrid')) {
-      return {
-        filepath: savedFile.uri,
-        webviewPath: Capacitor.convertFileSrc(savedFile.uri)
-      };
-    }
-
-    return {
-      filepath: fileName,
-      webviewPath: photo.webPath
-    };
-  }
-
-  private async readAsBase64(photo: Photo) {
-    if (this.platform.is('hybrid')) {
-      const file: ReadFileResult = await Filesystem.readFile({
-        path: photo.path!
-      });
-
-      return file.data;
-    }
-    else {
-
-      const response: Response = await fetch(photo.webPath!);
-      const blob: Blob = await response.blob();
-
-      return await this.convertBlobToBase64(blob) as string;
-    }
-  }
-
-  private convertBlobToBase64 = (blob: Blob) => new Promise((resolve, reject) => {
-    const reader: FileReader = new FileReader();
-    reader.onerror = reject;
-    reader.onload = () => {
-      resolve(reader.result);
-    };
-    reader.readAsDataURL(blob);
-  });*/
 }
