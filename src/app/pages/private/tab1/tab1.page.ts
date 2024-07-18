@@ -7,7 +7,17 @@ import {
   IonRow,
   IonList,
   IonItem,
-  IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, Platform
+  IonLabel,
+  IonButton,
+  IonAlert,
+  IonInput,
+  IonImg,
+  IonCol,
+  Platform,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle, IonCardContent
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
@@ -19,7 +29,7 @@ import {IRose} from "../../../model/interfaces";
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent],
 })
 
 export class Tab1Page implements OnInit {
@@ -39,6 +49,10 @@ export class Tab1Page implements OnInit {
     console.log('Initialize myGarden variable');
     this.getMyGarden();
     this.initializeAlertInput();
+  }
+
+  ionViewWillEnter() {
+
   }
 
   initializeAlertInput(): void {
@@ -77,6 +91,7 @@ export class Tab1Page implements OnInit {
     ];
   }
 
+
   getMyGarden(): void {
     this.myGarden = this.myRoseGardenService.getMyGarden();
   }
@@ -85,6 +100,7 @@ export class Tab1Page implements OnInit {
     try {
       console.log('My Garden before add new rose: ', this.myGarden);
       this.myRoseGardenService.setRose(rose);
+      this.getMyGarden();
     } catch (error) {
       console.error('Error saving rose: ', error);
     }
@@ -95,4 +111,7 @@ export class Tab1Page implements OnInit {
       console.error('Error getting my garden');
     }
   }
+
+
+
 }

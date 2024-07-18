@@ -1,18 +1,28 @@
 import {Injectable} from '@angular/core';
 import {Camera, CameraResultType, CameraSource, Photo} from "@capacitor/camera";
 import {IRose} from "../model/interfaces";
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  docData,
+  Firestore,
+  updateDoc
+} from "@angular/fire/firestore";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyRoseGardenService {
 
-  constructor() {
+  constructor(private firestore: Firestore) {
     console.log('RosesService initialized');
   }
 
-  getMyGarden(): IRose[] {
-
+  getMyGarden() {
     const myGardenLocalStorage: string = window.localStorage.getItem('myGardenLocalStorage');
 
     if (myGardenLocalStorage) {
@@ -27,7 +37,13 @@ export class MyRoseGardenService {
 
   setRose(rose: IRose): void {
     const myGarden: IRose[] = this.getMyGarden();
-    myGarden.push(rose);
+    const r: IRose = {
+      name: rose[0],
+      intensityFragrance: rose[1],
+      moreInfo: rose[2],
+      photo: null,
+    };
+    myGarden.push(r);
     this.saveMyGarden(myGarden);
     console.log('Updated garden after adding new rose: ', myGarden);
   }
@@ -71,5 +87,32 @@ export class MyRoseGardenService {
     console.log('Captured new rose photo: ', capturedNewRose);
     return capturedNewRose;
   }
+/*
+  // FIRESTORE
+  getMyGarden(): Observable<IRose[]> {
+
+    const myGardenFirestoreRef = collection(this.firestore, 'myGardenFirestore');
+    return collectionData(myGardenFirestoreRef, {idField: 'id'}) as Observable<IRose[]>;
+  }
+
+  getRoseById(id: string): Observable<IRose> {
+    const roseDocRef = doc(this.firestore, 'myGardenFirestore/${id}');
+    return docData(roseDocRef, { idField: 'id' }) as Observable<IRose>;
+  }
+
+  addRose(rose: IRose) {
+    const myGardenFirestoreRef = collection(this.firestore, 'myGardenFirestore');
+    return addDoc(myGardenFirestoreRef, rose);
+  }
+
+  deleteRose(rose: IRose) {
+    const roseDocRef = doc(this.firestore, 'myGardenFirestore/${rose.id}');
+    return deleteDoc(roseDocRef);
+  }
+
+  updateRose(rose: IRose) {
+    const roseDocRef = doc(this.firestore, 'myGardenFirestore/${rose.id}');
+    return updateDoc(roseDocRef, { ...rose });
+  }*/
 
 }
