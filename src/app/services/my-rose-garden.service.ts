@@ -90,7 +90,7 @@ export class MyRoseGardenService {
 
   // FIRESTORE
   getMyGardenFirestore() {
-    const myGardenRef = collection(this.firestore, 'myGarden');
+    const myGardenRef = collection(this.firestore, 'mygarden');
     return collectionData(myGardenRef);
   }
 

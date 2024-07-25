@@ -43,6 +43,11 @@ export class Tab1Page implements OnInit {
 
   constructor(platform: Platform) {
     this.platform = platform;
+
+    // FIREBASE
+    this.myRoseGardenService.getMyGardenFirestore().subscribe(res => {
+      console.log('firestore getMyGardenFirestore', res);
+    });
   }
 
   ngOnInit(): void {
@@ -50,10 +55,7 @@ export class Tab1Page implements OnInit {
     this.getMyGarden();
     this.initializeAlertInput();
 
-    // FIREBASE
-    this.myRoseGardenService.getMyGardenFirestore().subscribe(res => {
-      console.log('firestore getMyGardenFirestore', res);
-    });
+
   }
 
   ionViewWillEnter() {
