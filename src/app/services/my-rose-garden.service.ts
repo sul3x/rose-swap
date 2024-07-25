@@ -89,9 +89,9 @@ export class MyRoseGardenService {
   }
 
   // FIRESTORE
-  getMyGardenFirestore() {
+  getMyGardenFirestore(): Observable<IRose[]> {
     const myGardenRef = collection(this.firestore, 'mygarden');
-    return collectionData(myGardenRef);
+    return collectionData(myGardenRef) as Observable<IRose[]>;
   }
 
 /*
