@@ -49,6 +49,11 @@ export class Tab1Page implements OnInit {
     console.log('Initialize myGarden variable');
     this.getMyGarden();
     this.initializeAlertInput();
+
+    // FIREBASE
+    this.myRoseGardenService.getMyGardenFirestore().subscribe(res => {
+      console.log('firestore getMyGardenFirestore', res);
+    });
   }
 
   ionViewWillEnter() {
