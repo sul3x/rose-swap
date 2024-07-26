@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -23,18 +23,17 @@ import {
   IonButtons,
   IonFab,
   IonFabButton,
-  IonIcon, IonThumbnail
+  IonIcon,
+  IonThumbnail
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
-import {Photo} from "@capacitor/camera";
-import {IRose} from "../../../model/interfaces";
-import {addIcons} from "ionicons";
-import {AlertController} from "@ionic/angular";
-import {addOutline} from "ionicons/icons";
-import {Timestamp} from "@angular/fire/firestore";
-
-import {User} from '@firebase/auth-types';
-import {AngularFireAuth} from "@angular/fire/compat/auth";
+import { IRose } from "../../../model/interfaces";
+import { addIcons } from "ionicons";
+import { AlertController } from "@ionic/angular";
+import { addOutline } from "ionicons/icons";
+import { Timestamp } from "@angular/fire/firestore";
+import { AuthService } from "../../../services/auth.service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-tab1',
@@ -43,51 +42,48 @@ import {AngularFireAuth} from "@angular/fire/compat/auth";
   standalone: true,
   imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonButtons, IonFab, IonFabButton, IonIcon, IonThumbnail],
 })
-
 export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
   private platform: Platform;
-  private userId: string;
 
 
   constructor(
     platform: Platform,
     private myRoseGardenService: MyRoseGardenService,
     private alertCtrl: AlertController,
-    private authentication: AngularFireAuth
-  ){
+    private authService: AuthService
+  ) {
     this.platform = platform;
-
-    this.authentication.authState.subscribe(user => {
-      console.log('user: ', user);
-      console.log('userId: ', user.uid);
-      this.userId = user.uid;
-    })
-
   }
 
   ngOnInit(): void {
-
     addIcons({
       addOutline
     });
 
-
   }
 
   ionViewWillEnter() {
-    // FIREBASE
+
+
+    // Fetch the garden
     this.myRoseGardenService.getMyGardenFirestore().subscribe((myGarden: IRose[]) => {
       this.myGarden = myGarden;
     });
   }
 
   openRose() {
-
+    // Implementation for opening a rose
   }
 
-  async addRose() {
+  async addRoseWithUserId() {
+    this.authService.getUserId().subscribe(userId => {
+      this.addRose(userId);
+    });
+  }
+
+  async addRose(userId: string | null) {
     const alert = await this.alertCtrl.create({
       header: 'Add Rose',
       inputs: [
@@ -111,24 +107,22 @@ export class Tab1Page implements OnInit {
         }
       ],
       buttons: [
-        /*{
-          text: 'Photo New Rose',
-          handler: async (): Promise<boolean> => {
-            this.capturedRose = await this.myRoseGardenService.addNewPhotoRose();
-            return false;
-          }
-        },*/
         {
           text: 'Add',
-          handler: (rose: IRose): void => {
-            this.myRoseGardenService.addRose({
-              name: rose[0],
-              intensityFragrance: rose[1],
-              cuttings: rose[2],
-              moreInfo: rose[3],
-              addedAt: Timestamp.now(),
-              userId: this.userId
-            });
+          handler: (roseData: any): void => {
+            if (userId) {
+              const newRose: IRose = {
+                name: roseData[0],
+                intensityFragrance: roseData[1],
+                cuttings: roseData[2],
+                moreInfo: roseData[3],
+                addedAt: Timestamp.now(),
+                userId: userId
+              };
+              this.myRoseGardenService.addRose(newRose);
+            } else {
+              console.error('No user ID found');
+            }
           }
         },
         {
@@ -137,7 +131,10 @@ export class Tab1Page implements OnInit {
         }
       ]
     });
+
+    console.log('User ID at addRose:', userId);
     await alert.present();
   }
+
 
 }
