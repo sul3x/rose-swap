@@ -33,6 +33,8 @@ import {AlertController} from "@ionic/angular";
 import {addOutline} from "ionicons/icons";
 import {Timestamp} from "@angular/fire/firestore";
 
+import {User} from '@firebase/auth-types';
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 
 @Component({
   selector: 'app-tab1',
@@ -45,15 +47,24 @@ import {Timestamp} from "@angular/fire/firestore";
 export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
-
   private platform: Platform;
+  private userId: string;
 
 
   constructor(
     platform: Platform,
     private myRoseGardenService: MyRoseGardenService,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private authentication: AngularFireAuth
+  ){
     this.platform = platform;
+
+    this.authentication.authState.subscribe(user => {
+      console.log('user: ', user);
+      console.log('userId: ', user.uid);
+      this.userId = user.uid;
+    })
+
   }
 
   ngOnInit(): void {
@@ -62,6 +73,7 @@ export class Tab1Page implements OnInit {
       addOutline
     });
 
+
   }
 
   ionViewWillEnter() {
@@ -69,6 +81,10 @@ export class Tab1Page implements OnInit {
     this.myRoseGardenService.getMyGardenFirestore().subscribe((myGarden: IRose[]) => {
       this.myGarden = myGarden;
     });
+  }
+
+  openRose() {
+
   }
 
   async addRose() {
@@ -110,7 +126,8 @@ export class Tab1Page implements OnInit {
               intensityFragrance: rose[1],
               cuttings: rose[2],
               moreInfo: rose[3],
-              addedAt: Timestamp.now()
+              addedAt: Timestamp.now(),
+              userId: this.userId
             });
           }
         },
