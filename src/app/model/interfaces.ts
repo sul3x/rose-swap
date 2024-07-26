@@ -1,4 +1,5 @@
 import {Photo} from "@capacitor/camera";
+import {Timestamp} from '@angular/fire/firestore';
 
 export interface IRose {
   id?: string;
@@ -7,4 +8,5 @@ export interface IRose {
   cuttings: number;
   intensityFragrance: number;
   moreInfo: string;
+  addedAt?: Timestamp;
 }

@@ -8,6 +8,7 @@ import {
   Firestore
 } from "@angular/fire/firestore";
 import {Observable} from "rxjs";
+import {Timestamp, query, orderBy} from '@firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class MyRoseGardenService {
   // FIRESTORE GET MYGARDEN
   getMyGardenFirestore(): Observable<IRose[]> {
     const myGardenRef = collection(this.firestore, 'mygarden');
-    return collectionData(myGardenRef, { idField: 'id'}) as Observable<IRose[]>;
+    const myGardenOrderByDesc = query(myGardenRef, orderBy('addedAt', 'desc'));
+    return collectionData(myGardenOrderByDesc, { idField: 'id'}) as Observable<IRose[]>;
   }
 
   // FIRESTORE SAVE NEW ROSE

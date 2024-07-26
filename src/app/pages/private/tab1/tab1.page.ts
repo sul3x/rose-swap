@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -29,8 +29,9 @@ import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import {Photo} from "@capacitor/camera";
 import {IRose} from "../../../model/interfaces";
 import {addIcons} from "ionicons";
-import {add} from "ionicons/icons";
 import {AlertController} from "@ionic/angular";
+import {addOutline} from "ionicons/icons";
+import {Timestamp} from "@angular/fire/firestore";
 
 
 @Component({
@@ -43,9 +44,6 @@ import {AlertController} from "@ionic/angular";
 
 export class Tab1Page implements OnInit {
 
-  public alertButtons: {}[] = [{}];
-  public alertInputs:{}[] = [{}];
-  public capturedRose: Photo;
   public myGarden: IRose[] = [];
 
   private platform: Platform;
@@ -56,19 +54,19 @@ export class Tab1Page implements OnInit {
     private myRoseGardenService: MyRoseGardenService,
     private alertCtrl: AlertController) {
     this.platform = platform;
-
   }
 
   ngOnInit(): void {
+
     addIcons({
-      add
-    })
+      addOutline
+    });
+
   }
 
   ionViewWillEnter() {
     // FIREBASE
     this.myRoseGardenService.getMyGardenFirestore().subscribe((myGarden: IRose[]) => {
-      console.log('firestore getMyGardenFirestore', myGarden);
       this.myGarden = myGarden;
     });
   }
@@ -111,7 +109,8 @@ export class Tab1Page implements OnInit {
               name: rose[0],
               intensityFragrance: rose[1],
               cuttings: rose[2],
-              moreInfo: rose[3]
+              moreInfo: rose[3],
+              addedAt: Timestamp.now()
             });
           }
         },
