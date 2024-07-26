@@ -37,29 +37,27 @@ export class Tab1Page implements OnInit {
   public alertButtons: {}[] = [{}];
   public alertInputs:{}[] = [{}];
   public capturedRose: Photo;
-  myRoseGardenService: MyRoseGardenService = inject(MyRoseGardenService);
   public myGarden: IRose[] = [];
   private platform: Platform;
 
-  constructor(platform: Platform) {
+  constructor(platform: Platform, private myRoseGardenService: MyRoseGardenService) {
     this.platform = platform;
 
-    // FIREBASE
-    this.myRoseGardenService.getMyGardenFirestore().subscribe(res => {
-      console.log('firestore getMyGardenFirestore', res);
-    });
+
   }
 
   ngOnInit(): void {
     console.log('Initialize myGarden variable');
     this.getMyGarden();
     this.initializeAlertInput();
-
-
   }
 
   ionViewWillEnter() {
-
+    // FIREBASE
+    this.myRoseGardenService.getMyGardenFirestore().subscribe((myGarden: IRose[]) => {
+      console.log('firestore getMyGardenFirestore', myGarden);
+      this.myGarden = myGarden;
+    });
   }
 
   initializeAlertInput(): void {
