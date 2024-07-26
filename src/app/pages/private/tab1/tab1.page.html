@@ -8,54 +8,46 @@
 
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">My Garden</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <!-- ADD NEW ROSE -->
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button id="present-alert" (click)="addRose()">
+      <ion-icon name="add"></ion-icon>
+      <ion-alert trigger="present-alert" header="About New Rose" [buttons]="alertButtons" [inputs]="alertInputs"></ion-alert>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- SHOW MY GARDEN FIRESTORE -->
   <ion-list>
-
-    <!-- ADD NEW ROSE -->
-    <ion-item>
-      <ion-button id="present-alert" (click)="initializeAlertInput()">Add New Rose</ion-button>
-      <ion-alert trigger="present-alert" header="Info about New Rose" [buttons]="alertButtons" [inputs]="alertInputs"></ion-alert>
-    </ion-item>
-
-    <!-- SHOW MY GARDEN LOCALSTORAGE-->
     @for (rose of myGarden; track rose) {
-      <ion-item>
-        <ion-row>
-          <ion-col>
-            Name: {{rose.name}}
-          </ion-col>
-          <ion-col>
-            Fragrance: {{rose.intensityFragrance}}
-          </ion-col>
-          <ion-col>
-            Info: {{rose.moreInfo}}
-          </ion-col>
-        </ion-row>
-      </ion-item>
-    }
-
-    <!-- SHOW MY GARDEN FIRESTORE -->
-    <ion-list>
-    @for (rose of myGarden; track $index) {
       <ion-card>
-        <ion-card-header>
-          <ion-card-title>Card Title</ion-card-title>
-          <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content>
-          Here's a small text description for the card content. Nothing more, nothing less.
-        </ion-card-content>
-
-        <ion-button fill="clear">Action 1</ion-button>
-        <ion-button fill="clear">Action 2</ion-button>
+        <ion-list>
+          <ion-card-header>
+            <ion-card-title>{{ rose.name }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-row>
+              <ion-item>
+                <ion-thumbnail slot="start">
+                  <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+                </ion-thumbnail>
+                <ion-col>
+                  <ion-row>
+                    <ion-label>Fragrance: {{ rose.intensityFragrance }}</ion-label>
+                  </ion-row>
+                  <ion-row>
+                    <ion-label>Cuttings: {{ rose.cuttings }}</ion-label>
+                  </ion-row>
+                  <ion-row>
+                    <ion-label>{{ rose.moreInfo }}</ion-label>
+                  </ion-row>
+                </ion-col>
+              </ion-item>
+            </ion-row>
+          </ion-card-content>
+        </ion-list>
       </ion-card>
     }
-    </ion-list>
-
   </ion-list>
+
 </ion-content>
