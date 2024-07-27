@@ -135,6 +135,8 @@ export class Tab1Page implements OnInit {
   }
 
   deleteRose(rose: IRose) {
-
+    this.myRoseGardenService.deleteRose(rose).then(r => {
+      console.log("Rose deleted successfully");
+    });
   }
 }
