@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {AuthService} from "../../../services/auth.service";
-import {Router} from "@angular/router";
 import {SideMenuComponent} from "../side-menu/side-menu.component";
 
 @Component({
@@ -14,13 +12,10 @@ import {SideMenuComponent} from "../side-menu/side-menu.component";
   ],
   standalone: true
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
+
+  @Input() title?: string;
 
   constructor() { }
-
-  ngOnInit() {
-    console.log('header works')
-  }
-
 
 }
