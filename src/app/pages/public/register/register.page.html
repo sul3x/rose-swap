@@ -14,7 +14,11 @@
     </ion-segment-button>
   </ion-segment>
 
-  <form (ngSubmit)="login()" [formGroup]="credentials">
+  <form (ngSubmit)="register()" [formGroup]="credentials">
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="text" placeholder="Display Name" formControlName="displayName"></ion-input>
+      <ion-note slot="error" *ngIf="(displayName.dirty || displayName.touched) && displayName.errors">Display name is required</ion-note>
+    </ion-item>
     <ion-item fill="solid" class="ion-margin-bottom">
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
       <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email is invalid</ion-note>
@@ -23,7 +27,15 @@
       <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
       <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password needs to be 6 characters</ion-note>
     </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="date" placeholder="Birth Date" formControlName="birthDate"></ion-input>
+      <ion-note slot="error" *ngIf="(birthDate.dirty || birthDate.touched) && birthDate.errors">Birth date is required</ion-note>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="text" placeholder="City" formControlName="city"></ion-input>
+      <ion-note slot="error" *ngIf="(city.dirty || city.touched) && city.errors">City is required</ion-note>
+    </ion-item>
 
-    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Log in</ion-button>
+    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Create account</ion-button>
   </form>
 </ion-content>
