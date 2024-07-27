@@ -19,4 +19,5 @@ export interface UserProfile {
     email: string;
     birthDate: string;
     city: string;
+    aboutMe?: string;
 }

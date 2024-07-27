@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
-import {addDoc, collection, Firestore} from "@angular/fire/firestore";
-import {UserProfile} from "../model/interfaces";
+import { addDoc, collection, doc, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
+import { UserProfile } from "../model/interfaces";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserProfileService {
+  constructor(private firestore: Firestore) {}
 
-  constructor(private firestore: Firestore) { }
+  async getUserProfile(userId: string): Promise<UserProfile> {
+    const userProfileDocRef = doc(this.firestore, `userprofile/${userId}`);
+    const userProfileDoc = await getDoc(userProfileDocRef);
+    return userProfileDoc.exists() ? (userProfileDoc.data() as UserProfile) : null;
+  }
 
-  setUserProfile(userProfile:UserProfile) {
-    const userProfileFirestoreRef = collection(this.firestore, 'userprofile');
-    return addDoc(userProfileFirestoreRef, userProfile);
+  async setUserProfile(userProfile: UserProfile) {
+    const userProfileDocRef = doc(this.firestore, `userprofile/${userProfile.id}`);
+    return setDoc(userProfileDocRef, userProfile, { merge: true });
   }
 }

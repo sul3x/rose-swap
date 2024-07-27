@@ -1,11 +1,36 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      About Me
-    </ion-title>
+
+    <ion-title>Profile</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content class="ion-padding">
+  <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="text" placeholder="Display Name" formControlName="displayName"></ion-input>
+      <ion-note slot="error" *ngIf="(displayName.dirty || displayName.touched) && displayName.errors?.['required']">
+        Display name is required
+      </ion-note>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="email" placeholder="Email" [value]="userEmail" readonly="true"></ion-input>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="date" placeholder="Birth Date" formControlName="birthDate"></ion-input>
+      <ion-note slot="error" *ngIf="(birthDate.dirty || birthDate.touched) && birthDate.errors">Birth date is required</ion-note>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-input type="text" placeholder="City" formControlName="city"></ion-input>
+      <ion-note slot="error" *ngIf="(city.dirty || city.touched) && city.errors?.['required']">
+        City is required
+      </ion-note>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-textarea placeholder="About Me" formControlName="aboutMe"></ion-textarea>
+    </ion-item>
 
+
+    <ion-button type="submit" expand="block" [disabled]="!profileForm.valid">Save</ion-button>
+  </form>
 </ion-content>
