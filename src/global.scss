@@ -35,3 +35,17 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+.large-toast {
+  --width: 90%;
+  --min-height: 80px; /* Increased height */
+  --border-radius: 8px;
+  --font-size: 1.2em;
+  --background: #28a745;
+  --color: white;
+  text-align: center;
+  padding: 20px; /* Increased padding */
+  bottom: 60px; /* Adjust to leave space for tabs */
+}
+
+
