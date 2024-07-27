@@ -1,12 +1,20 @@
 import {Injectable} from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "@angular/fire/auth";
+import {User} from "@firebase/auth-types";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
+  private userIdSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
+  public userId$: Observable<string | null> = this.userIdSubject.asObservable();
+
   constructor(private auth: Auth) {
+    this.auth.onAuthStateChanged((user: User | null) => {
+      this.userIdSubject.next(user ? user.uid : null);
+    });
   }
 
   async register({email, password}: { email: string; password: string }) {
@@ -29,5 +37,9 @@ export class AuthService {
 
   logout(){
     return signOut(this.auth)
+  }
+
+  getUserId(): Observable<string | null> {
+    return this.userId$;
   }
 }

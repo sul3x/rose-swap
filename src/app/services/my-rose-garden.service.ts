@@ -5,10 +5,10 @@ import {
   addDoc,
   collection,
   collectionData,
-  Firestore
+  Firestore, Timestamp
 } from "@angular/fire/firestore";
 import {Observable} from "rxjs";
-import {Timestamp, query, orderBy} from '@firebase/firestore';
+import {query, orderBy} from '@firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +37,16 @@ export class MyRoseGardenService {
   }
 
   // FIRESTORE SAVE NEW ROSE
-  addRose(rose: IRose) {
+  addRose(rose) {
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
     return addDoc(myGardenFirestoreRef, rose);
+  }
+
+  deleteRose(rose) {
+
+  }
+
+  editRose(rose) {
+
   }
 }

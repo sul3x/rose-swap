@@ -9,4 +9,5 @@ export interface IRose {
   intensityFragrance: number;
   moreInfo: string;
   addedAt?: Timestamp;
+  userId?: string;
 }
