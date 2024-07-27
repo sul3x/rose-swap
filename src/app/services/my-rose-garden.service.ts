@@ -1,21 +1,25 @@
 import {Injectable} from '@angular/core';
 import {Camera, CameraResultType, CameraSource, Photo} from "@capacitor/camera";
-import {IRose} from "../model/interfaces";
+import {IRose, UserProfile} from "../model/interfaces";
 import {
   addDoc,
   collection,
   collectionData,
-  Firestore, Timestamp
+  Firestore, Timestamp, where
 } from "@angular/fire/firestore";
-import {Observable} from "rxjs";
+import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
+import {AuthService} from "./auth.service";
+import {take} from "rxjs/operators";
+import {user} from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyRoseGardenService {
 
-  constructor(private firestore: Firestore) {
+  constructor(private firestore: Firestore,
+              private authService: AuthService) {
   }
 
   /*
@@ -31,9 +35,17 @@ export class MyRoseGardenService {
 
   // FIRESTORE GET MYGARDEN
   getMyGardenFirestore(): Observable<IRose[]> {
-    const myGardenRef = collection(this.firestore, 'mygarden');
-    const myGardenOrderByDesc = query(myGardenRef, orderBy('addedAt', 'desc'));
-    return collectionData(myGardenOrderByDesc, { idField: 'id'}) as Observable<IRose[]>;
+    return this.authService.getUserId().pipe(
+      take(1),
+      switchMap(userId => {
+        console.log(userId);
+        const myGardenRef = collection(this.firestore, 'mygarden');
+        const myGardenOrderByDesc = query(myGardenRef,
+          where('userId', '==', userId),
+          orderBy('addedAt', 'desc'));
+        return collectionData(myGardenOrderByDesc, { idField: 'id' }) as Observable<IRose[]>;
+      })
+    );
   }
 
   // FIRESTORE SAVE NEW ROSE
