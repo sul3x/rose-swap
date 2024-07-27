@@ -30,9 +30,10 @@ import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import { IRose } from "../../../model/interfaces";
 import { addIcons } from "ionicons";
 import { AlertController } from "@ionic/angular";
-import { addOutline } from "ionicons/icons";
+import { addOutline, trashOutline, pencilOutline } from "ionicons/icons";
 import { Timestamp } from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
+
 
 @Component({
   selector: 'app-tab1',
@@ -44,7 +45,7 @@ import { AuthService } from "../../../services/auth.service";
 export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
-
+  protected userId;
 
   constructor(
     private platform: Platform,
@@ -57,25 +58,22 @@ export class Tab1Page implements OnInit {
 
   ngOnInit(): void {
     addIcons({
-      addOutline
+      addOutline,
+      trashOutline,
+      pencilOutline
     });
 
+    this.authService.getUserId().subscribe(userId => {
+      this.userId = userId
+    })
   }
 
   ionViewWillEnter() {
-
-
     // Fetch the garden
     this.myRoseGardenService.getMyGardenFirestore().subscribe((myGarden: IRose[]) => {
       this.myGarden = myGarden;
     });
   }
-
-  openRose() {
-    // Implementation for opening a rose
-  }
-
-
 
   async addRose() {
     this.authService.getUserId().subscribe(async userId => {
@@ -115,6 +113,7 @@ export class Tab1Page implements OnInit {
                   userId: userId
                 };
                 this.myRoseGardenService.addRose(newRose);
+                console.log('rose userId: ', newRose.userId)
               } else {
                 console.error('No user ID found');
               }
@@ -131,4 +130,11 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  editRose(rose: IRose) {
+
+  }
+
+  deleteRose(rose: IRose) {
+
+  }
 }

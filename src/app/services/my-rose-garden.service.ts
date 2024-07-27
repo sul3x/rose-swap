@@ -41,4 +41,12 @@ export class MyRoseGardenService {
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
     return addDoc(myGardenFirestoreRef, rose);
   }
+
+  deleteRose(rose) {
+
+  }
+
+  editRose(rose) {
+
+  }
 }
