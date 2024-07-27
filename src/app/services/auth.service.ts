@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
-import {Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "@angular/fire/auth";
+import {Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from "@angular/fire/auth";
 import {User} from "@firebase/auth-types";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, of, switchMap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +39,20 @@ export class AuthService {
     return signOut(this.auth)
   }
 
-  getUserId(): Observable<string | null> {
+  getUserId2(): Observable<string | null> {
     return this.userId$;
   }
+
+  getUserId(): Observable<string | null> {
+    return user(this.auth).pipe(
+      switchMap((authUser: User | null) => {
+        if (authUser) {
+          return of(authUser.uid);
+        } else {
+          return of(null);
+        }
+      })
+    );
+  }
 }
+
