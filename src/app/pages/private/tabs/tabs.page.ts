@@ -1,7 +1,7 @@
 import { Component, EnvironmentInjector, inject } from '@angular/core';
 import {IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { ellipse, square } from 'ionicons/icons';
+import {ellipse, heartCircleOutline, square} from 'ionicons/icons';
 import {HeaderComponent} from "../../../shared/components/header/header.component";
 
 @Component({
@@ -17,8 +17,9 @@ export class TabsPage {
   constructor() {
     addIcons(
       {
-        ellipse, square,
-        "my-garden" : "../../assets/icon/my-garden.svg"
+        "my-garden" : "../../assets/icon/my-garden.svg",
+        'other-gardens': '../../assets/icon/other-gardens.svg',
+        heartCircleOutline
       });
   }
 }
