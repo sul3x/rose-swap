@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {AuthService} from "../../../services/auth.service";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {addIcons} from "ionicons";
+import {arrowRedoOutline} from "ionicons/icons";
+import {MenuController} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-side-menu',
@@ -9,16 +12,25 @@ import {Router} from "@angular/router";
   styleUrls: ['./side-menu.component.scss'],
   standalone: true,
   imports: [
-    IonicModule
+    IonicModule,
+    RouterLink
   ]
 })
-export class SideMenuComponent   {
+export class SideMenuComponent implements OnInit {
 
   constructor(
-      private router: Router,
-      private authService: AuthService) { }
+    private router: Router,
+    private authService: AuthService,
+    private menu: MenuController) {
+  }
 
+  ngOnInit(): void {
 
+    addIcons({
+      arrowRedoOutline
+    })
+
+  }
 
   async logout() {
     try {
@@ -30,4 +42,7 @@ export class SideMenuComponent   {
     }
   }
 
+  closeMenu() {
+    this.menu.close();
+  }
 }
