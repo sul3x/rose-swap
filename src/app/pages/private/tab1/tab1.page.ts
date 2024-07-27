@@ -33,14 +33,15 @@ import { AlertController } from "@ionic/angular";
 import { addOutline, trashOutline, pencilOutline } from "ionicons/icons";
 import { Timestamp } from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
-
+import {HeaderComponent} from "../../../shared/components/header/header.component";
+import {TabsPage} from "../tabs/tabs.page";
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonButtons, IonFab, IonFabButton, IonIcon, IonThumbnail],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonButtons, IonFab, IonFabButton, IonIcon, IonThumbnail, HeaderComponent],
 })
 export class Tab1Page implements OnInit {
 
@@ -57,6 +58,7 @@ export class Tab1Page implements OnInit {
   }
 
   ngOnInit(): void {
+
     addIcons({
       addOutline,
       trashOutline,
@@ -128,6 +130,7 @@ export class Tab1Page implements OnInit {
       await alert.present();
       console.log('User ID at addRose:', userId);
     });
+
   }
 
   editRose(rose: IRose) {

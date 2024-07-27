@@ -1,21 +1,41 @@
-import {Component, EnvironmentInjector, inject, OnInit} from '@angular/core';
+import {Component, EnvironmentInjector, inject, Input, OnInit} from '@angular/core';
 import {IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent} from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import {ellipse, heartCircleOutline, square} from 'ionicons/icons';
+import {addIcons} from 'ionicons';
+import {heartCircleOutline} from 'ionicons/icons';
 import {HeaderComponent} from "../../../shared/components/header/header.component";
+import {ActivatedRoute, NavigationEnd, Router} from "@angular/router";
+import {filter} from "rxjs";
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
   standalone: true,
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, HeaderComponent, IonContent],
+  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, HeaderComponent],
 })
 export class TabsPage implements OnInit {
+
   public environmentInjector = inject(EnvironmentInjector);
   isDarkMode: boolean = false;
+  public title: string;
 
-  constructor() {
+  constructor(private route: ActivatedRoute, private router: Router) {
+  }
+
+  ngOnInit() {
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      console.log('ruta actual: ', this.router.url);
+
+      let currentRoute = this.route.root;
+      while (currentRoute.children && currentRoute.children.length > 0) {
+        currentRoute = currentRoute.children[0];
+      }
+      this.title = currentRoute.snapshot.data['title'];
+    });
+
     addIcons(
       {
         'my-garden' : '../../assets/icon/my-garden.svg',
@@ -24,13 +44,18 @@ export class TabsPage implements OnInit {
         'other-gardens-dark': '../../assets/icon/other-gardens-dark.svg',
         heartCircleOutline
       });
-  }
 
-  ngOnInit() {
     this.isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
       this.isDarkMode = event.matches;
     });
   }
+
+  initializeTitle() {
+    this.route.url.subscribe(() => {
+      console.log(this.route.firstChild.data);
+    })
+  }
+
 }

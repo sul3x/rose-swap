@@ -1,21 +1,24 @@
-import {Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from '../../../../environments/environment';
 import {IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
+import {HeaderComponent} from "../../../shared/components/header/header.component";
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, HeaderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class Tab2Page implements AfterViewInit {
+
   @ViewChild('map') mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
 
-  constructor() {}
+  constructor() {
+  }
 
   async ngAfterViewInit() {
     await this.createMap();
