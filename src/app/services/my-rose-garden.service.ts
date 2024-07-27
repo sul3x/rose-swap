@@ -1,17 +1,15 @@
 import {Injectable} from '@angular/core';
-import {Camera, CameraResultType, CameraSource, Photo} from "@capacitor/camera";
-import {IRose, UserProfile} from "../model/interfaces";
+import {IRose} from "../model/interfaces";
 import {
   addDoc,
   collection,
-  collectionData,
-  Firestore, Timestamp, where
+  collectionData, deleteDoc, doc,
+  Firestore, where
 } from "@angular/fire/firestore";
 import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
 import {AuthService} from "./auth.service";
 import {take} from "rxjs/operators";
-import {user} from "@angular/fire/auth";
 
 @Injectable({
   providedIn: 'root'
@@ -48,16 +46,16 @@ export class MyRoseGardenService {
   }
 
   // FIRESTORE SAVE NEW ROSE
-  addRose(rose) {
+  async addRose(rose: IRose) {
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
     return addDoc(myGardenFirestoreRef, rose);
   }
 
-  deleteRose(rose) {
-
-  }
-
-  editRose(rose) {
-
+  async deleteRose(rose: IRose): Promise<void> {
+    if (!rose.id) {
+      throw new Error('Rose ID is required to delete');
+    }
+    const roseDocRef = doc(this.firestore, `mygarden/${rose.id}`);
+    return deleteDoc(roseDocRef);
   }
 }
