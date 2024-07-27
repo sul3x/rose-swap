@@ -38,7 +38,6 @@ export class MyRoseGardenService {
     return this.authService.getUserId().pipe(
       take(1),
       switchMap(userId => {
-        console.log(userId);
         const myGardenRef = collection(this.firestore, 'mygarden');
         const myGardenOrderByDesc = query(myGardenRef,
           where('userId', '==', userId),
