@@ -11,3 +11,12 @@ export interface IRose {
   addedAt?: Timestamp;
   userId?: string;
 }
+
+
+export interface UserProfile {
+    id?: string;
+    displayName: string;
+    email: string;
+    birthDate: string;
+    city: string;
+}

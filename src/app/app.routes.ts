@@ -15,4 +15,8 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/public/login/login.page').then( m => m.LoginPage),
     ...canActivate(redirectLoggedInToHome)
   },
+  {
+    path: 'register',
+    loadComponent: () => import('./pages/public/register/register.page').then( m => m.RegisterPage)
+  },
 ];
