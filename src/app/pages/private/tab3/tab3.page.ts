@@ -6,6 +6,7 @@ import { UserProfile } from '../../../model/interfaces';
 import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-tab3',
@@ -23,7 +24,8 @@ export class Tab3Page implements OnInit {
     private fb: FormBuilder,
     private userProfileService: UserProfileService,
     private authService: AuthService, // Assuming you have an AuthService to get the user ID
-    private toastController: ToastController // Inject ToastController
+    private toastController: ToastController,
+    private router: Router // Inject ToastController
   ) {
     this.profileForm = this.fb.group({
       displayName: ['', [Validators.required]],
@@ -68,10 +70,12 @@ export class Tab3Page implements OnInit {
 
       try {
         await this.userProfileService.setUserProfile(updatedProfile);
-        this.showToast('Profile saved successfully');
+        await this.showToast('Profile saved successfully');
+        await this.router.navigateByUrl('/tabs'); // Navigate to my-garden
+
       } catch (error) {
         console.error('Failed to save user profile', error);
-        this.showToast('Failed to save profile');
+        await this.showToast('Failed to save profile');
       }
     } else {
       console.error('Form is invalid or user ID is not available');
@@ -80,9 +84,10 @@ export class Tab3Page implements OnInit {
 
   async showToast(message: string) {
     const toast = await this.toastController.create({
-      message: message,
+      message,
       duration: 2000,
-      position: 'bottom'
+      position: 'bottom',
+      cssClass: 'large-toast'
     });
     await toast.present();
   }
