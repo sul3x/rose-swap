@@ -78,6 +78,12 @@ export class Tab1Page implements OnInit {
 
   async addRose() {
     this.authService.getUserId().subscribe(async userId => {
+
+      if (!userId) {
+        console.error('No user ID found.');
+        return;
+      }
+
       const alert = await this.alertCtrl.create({
         header: 'Add Rose',
         inputs: [
@@ -117,22 +123,20 @@ export class Tab1Page implements OnInit {
         buttons: [
           {
             text: 'Add',
-            handler: (roseData: any): void => {
-              if (!this.validateInputs(roseData)) {
-                if (userId) {
-                  const newRose: IRose = {
-                    name: roseData[0],
-                    intensityFragrance: roseData[1],
-                    cuttings: roseData[2],
-                    moreInfo: roseData[3],
-                    addedAt: Timestamp.now(),
-                    userId: userId
-                  };
-                  this.myRoseGardenService.addRose(newRose);
-                  console.log('rose userId: ', newRose.userId)
-                } else {
-                  console.error('No user ID found');
-                }
+            handler: async (roseData: any) => {
+              if (await this.validateInputs(roseData)) {
+                const newRose: IRose = {
+                  name: roseData[0],
+                  intensityFragrance: roseData[1],
+                  cuttings: roseData[2],
+                  moreInfo: roseData[3],
+                  addedAt: Timestamp.now(),
+                  userId: userId
+                };
+                this.myRoseGardenService.addRose(newRose);
+                console.log('rose userId: ', newRose.userId)
+              } else {
+                console.error('No user ID found');
               }
             }
           },
@@ -148,32 +152,42 @@ export class Tab1Page implements OnInit {
 
   }
 
-  async validateInputs(roseData: IRose) {
+  async validateInputs(roseData) {
 
-    if (!roseData.name || roseData.name.length < 2 || roseData.name.length > 12) {
-      await this.alertRoseDataName();
-      return false;
+    let correct = true;
+    let totalMessageError: string[] = [];
+
+    if (!roseData[0] || roseData[0].length < 2 || roseData[0].length > 12) {
+      totalMessageError.push('The name of the rose must be between 2 and 12 characters.');
+      correct = false;
     }
-    if (!roseData.cuttings || roseData.cuttings < 0 || roseData.cuttings > 100) {
-      await this.alertRoseDataCuttings();
-      return false;
+    if (!roseData[1] || roseData[1] < 0 || roseData[1] > 100) {
+      totalMessageError.push('The number of cuttings must be between 0 and 100.');
+      correct = false;
     }
-    if (!roseData.intensityFragrance || roseData.intensityFragrance < 0 || roseData.intensityFragrance > 10) {
-      await this.alertRoseDataFragrance();
-      return false;
+    if (!roseData[2] || roseData[2] < 0 || roseData[2] > 10) {
+      totalMessageError.push('The intensity of fragrance must be between 0 and 10.');
+      correct = false;
     }
-    if (!roseData.moreInfo || roseData.moreInfo.length > 30) {
-      await this.alertRoseDataMoreInfo();
-      return false;
+    if (!roseData[3] || roseData[3] < 0 || roseData[3] > 30) {
+      totalMessageError.push('The description must be up to 30 characters.');
+      correct = false;
     }
 
-    return true;
+    if (!correct) {
+      await this.alertRoseData(totalMessageError.join('\n'));
+    } else {
+      await this.alertRoseDataOk('Your new rose is in your garden. 🌹')
+    }
+
+    return correct;
+
   }
 
-  async alertRoseDataName() {
+  async alertRoseData(totalMessageError) {
     const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Please insert rose name (2 to 12 characters).',
+      header: 'We encountered some issues with your input:',
+      message: totalMessageError,
       buttons: [{
         text: 'OK',
         handler: () => {
@@ -184,10 +198,10 @@ export class Tab1Page implements OnInit {
     await alert.present();
   }
 
-  async alertRoseDataFragrance() {
+  async alertRoseDataOk(messageOk: string) {
     const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Please insert intensity of fragrance (0 to 10)',
+      header: 'Congrats',
+      message: messageOk,
       buttons: [{
         text: 'OK',
         handler: () => {
@@ -195,34 +209,6 @@ export class Tab1Page implements OnInit {
         }
       }]
     })
-    await alert.present();
-  }
-
-  async alertRoseDataCuttings() {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Please insert number of cuttings (0 to 100)',
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          alert.dismiss()
-        }
-      }]
-    })
-    await alert.present();
-  }
-
-  async alertRoseDataMoreInfo() {
-    const alert = await this.alertController.create({
-      header: 'Error',
-      message: 'Please insert more info (max 30 characters)',
-      buttons: [{
-        text: 'OK',
-        handler: () => {
-          alert.dismiss();
-        }
-      }]
-    });
     await alert.present();
   }
 
@@ -235,4 +221,60 @@ export class Tab1Page implements OnInit {
       console.log("Rose deleted successfully");
     });
   }
+
+  async deleteRoseAlert(rose: IRose) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: '¿Are you sure that you want to delete this rose?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            this.deleteRose(rose);
+            this.deleteRoseMessageOk();
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+            this.deleteRoseMessageCancel();
+            alert.dismiss();
+          }
+        }]
+    })
+    await alert.present();
+  }
+
+  async deleteRoseMessageOk() {
+    const alert = await this.alertController.create({
+      header: 'Rose deleted',
+      message: 'Your rose is no longer in your garden.',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            alert.dismiss();
+          }
+        }
+      ]
+    })
+    await alert.present();
+  }
+
+  async deleteRoseMessageCancel() {
+    const alert = await this.alertController.create({
+      header: 'No worries:)',
+      message: 'Your rose still belongs to your garden. 🌷',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            alert.dismiss();
+          }
+        }
+      ]
+    })
+    await alert.present();
+  }
+
 }
