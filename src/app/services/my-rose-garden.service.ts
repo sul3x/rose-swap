@@ -3,8 +3,8 @@ import {IRose} from "../model/interfaces";
 import {
   addDoc,
   collection,
-  collectionData, deleteDoc, doc,
-  Firestore, where
+  collectionData, deleteDoc, doc, docData,
+  Firestore, updateDoc, where
 } from "@angular/fire/firestore";
 import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
@@ -44,8 +44,6 @@ export class MyRoseGardenService {
       })
     );
   }
-
-  // FIRESTORE SAVE NEW ROSE
   async addRose(rose: IRose) {
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
     return addDoc(myGardenFirestoreRef, rose);
@@ -57,5 +55,20 @@ export class MyRoseGardenService {
     }
     const roseDocRef = doc(this.firestore, `mygarden/${rose.id}`);
     return deleteDoc(roseDocRef);
+  }
+
+  getRoseById(id): Observable<IRose> {
+    const roseDocRef = doc(this.firestore, `mygarden/${id}`);
+    return docData(roseDocRef, { idField: 'id' }) as Observable<IRose>;
+  }
+
+  updateRose(rose: IRose ) {
+    const roseDocRef = doc(this.firestore, `mygarden/${rose.id}`);
+    return updateDoc(roseDocRef, {
+      name: rose.name,
+      cuttings: rose.cuttings,
+      intensityFragrance: rose.intensityFragrance,
+      moreInfo: rose.moreInfo
+    });
   }
 }
