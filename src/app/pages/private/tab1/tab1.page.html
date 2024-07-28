@@ -33,10 +33,10 @@
                   </ion-row>
                   @if (rose.userId === userId) {
                     <ion-row>
-                      <ion-button (click)="editRose(rose)">
+                      <ion-button (click)="updateRose(rose)">
                         <ion-icon name="pencil-outline"></ion-icon>
                       </ion-button>
-                      <ion-button (click)="deleteRose(rose)">
+                      <ion-button (click)="deleteRoseAlert(rose)">
                         <ion-icon name="trash-outline"></ion-icon>
                       </ion-button>
                     </ion-row>

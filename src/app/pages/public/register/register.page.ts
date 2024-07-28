@@ -7,6 +7,9 @@ import { NgIf } from "@angular/common";
 import { UserProfileService } from "../../../services/user-profile.service";
 import { UserProfile } from "../../../model/interfaces";
 import { take } from 'rxjs/operators';
+import {get} from "@angular/fire/database";
+import {async} from "rxjs";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-register',
@@ -62,10 +65,10 @@ export class RegisterPage implements OnInit {
     await loading.dismiss();
 
     if (user) {
-      this.authService.getUserId().pipe(take(1)).subscribe({
-        next: userId => {
+
+
           const userProfile: UserProfile = {
-            id: userId,
+            id: this.authService.getUserId(),
             displayName: this.credentials.get('displayName').value,
             email: this.credentials.get('email').value,
             birthDate: this.credentials.get('birthDate').value,
@@ -74,11 +77,8 @@ export class RegisterPage implements OnInit {
 
           this.userService.setUserProfile(userProfile);
           this.router.navigateByUrl('/tabs', { replaceUrl: true });
-        },
-        error: err => {
-          this.showAlert('Registration failed', 'Could not get user ID. Please try again.');
-        }
-      });
+
+
     } else {
       this.showAlert('Registration failed', 'Please try again!');
     }

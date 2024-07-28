@@ -20,4 +20,6 @@ export interface UserProfile {
     birthDate: string;
     city: string;
     aboutMe?: string;
+    pushToken?: string;
+    avatarImg?: string;
 }

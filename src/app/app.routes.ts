@@ -22,5 +22,5 @@ export const routes: Routes = [
   {
     path: 'myaccount',
     loadComponent: () => import('./pages/private/myaccount/myaccount.page').then( m => m.MyaccountPage)
-  }
+  },
 ];
