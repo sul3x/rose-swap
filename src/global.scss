@@ -36,16 +36,27 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
-.large-toast {
-  --width: 90%;
-  --min-height: 80px; /* Increased height */
-  --border-radius: 8px;
-  --font-size: 1.2em;
-  --background: #28a745;
-  --color: white;
-  text-align: center;
-  padding: 20px; /* Increased padding */
-  bottom: 60px; /* Adjust to leave space for tabs */
+
+
+
+
+
+.custom-marker img {
+  width: 50px; /* Adjust the size as needed */
+  height: 50px;
 }
 
+.info-window {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+}
 
+.info-window h2 {
+  font-size: 16px;
+  margin: 0 0 5px;
+}
+
+.info-window p {
+  margin: 0;
+}
