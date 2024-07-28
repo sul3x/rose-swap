@@ -44,12 +44,15 @@
 .custom-marker img {
   width: 50px; /* Adjust the size as needed */
   height: 50px;
+
 }
 
 .info-window {
   font-family: Arial, sans-serif;
   font-size: 14px;
   line-height: 20px;
+  color: black; /* Always set text color to black */
+
 }
 
 .info-window h2 {
