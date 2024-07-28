@@ -44,7 +44,7 @@ export class Tab2Page implements AfterViewInit {
   }
 
   addAdvancedMarkers() {
-    if (google.maps.marker && google.maps.marker.AdvancedMarkerElement) {
+    if (google.maps.marker.AdvancedMarkerElement) {
       console.log('AdvancedMarkerElement is available');
       this.locations.forEach(location => {
         const markerContent = document.createElement('div');
