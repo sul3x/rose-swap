@@ -49,7 +49,7 @@ export class Tab2Page implements AfterViewInit {
       this.locations.forEach(location => {
         const markerContent = document.createElement('div');
         markerContent.className = 'custom-marker';
-        markerContent.innerHTML = `<img src="assets/icon/marker-orange-light.svg" alt="${location.description}">`; // Predefined icon path
+        markerContent.innerHTML = `<img src="assets/icon/my-garden-marker-green.svg" alt="${location.description}">`; // Predefined icon path
 
         const advancedMarker = new google.maps.marker.AdvancedMarkerElement({
           position: { lat: location.lat, lng: location.lng },
