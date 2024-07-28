@@ -33,6 +33,7 @@ import { addIcons } from "ionicons";
 import { addOutline, trashOutline, pencilOutline } from "ionicons/icons";
 import { Timestamp } from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
+import {Photo} from "@capacitor/camera";
 
 @Component({
   selector: 'app-tab1',
@@ -45,6 +46,7 @@ export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
   protected userId;
+  public capturedRose: Photo;
 
   constructor(
     private platform: Platform,
@@ -123,7 +125,14 @@ export class Tab1Page implements OnInit {
         ],
         buttons: [
           {
-            text: 'Add',
+            text: 'Photo Rose',
+            handler: async () => {
+              this.capturedRose = await this.myRoseGardenService.addNewPhotoRose();
+              return false;
+            }
+          },
+          {
+            text: 'Save',
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const newRose: IRose = {

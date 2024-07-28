@@ -1,37 +1,34 @@
 import {Injectable} from '@angular/core';
 import {IRose} from "../model/interfaces";
 import {
-  addDoc,
-  collection,
-  collectionData, deleteDoc, doc, docData,
+  addDoc, collection, collectionData, deleteDoc, doc, docData,
   Firestore, updateDoc, where
 } from "@angular/fire/firestore";
 import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
 import {AuthService} from "./auth.service";
 import {take} from "rxjs/operators";
+import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MyRoseGardenService {
 
-  constructor(private firestore: Firestore,
-              private authService: AuthService) {
-  }
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService,
+    ){}
 
-  /*
   public async addNewPhotoRose(): Promise<Photo> {
     const capturedNewRose: Photo = await Camera.getPhoto({
       resultType: CameraResultType.Uri,
       source: CameraSource.Camera,
-      quality: 100
+      quality: 80
     });
-    console.log('Captured new rose photo: ', capturedNewRose);
     return capturedNewRose;
-  }*/
+  }
 
-  // FIRESTORE GET MYGARDEN
   getMyGardenFirestore(): Observable<IRose[]> {
     return this.authService.getUserId().pipe(
       take(1),
