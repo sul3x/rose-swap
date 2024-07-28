@@ -31,7 +31,6 @@ export class MyRoseGardenService {
     return capturedNewRose;
   }*/
 
-  // FIRESTORE GET MYGARDEN
   getMyGardenFirestore(): Observable<IRose[]> {
     return this.authService.getUserId().pipe(
       take(1),
