@@ -76,6 +76,7 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  // add new rose
   async addRose() {
     this.authService.getUserId().subscribe(async userId => {
 
@@ -149,7 +150,6 @@ export class Tab1Page implements OnInit {
       await alert.present();
       console.log('User ID at addRose:', userId);
     });
-
   }
 
   async validateInputs(roseData) {
@@ -177,7 +177,7 @@ export class Tab1Page implements OnInit {
     if (!correct) {
       await this.alertRoseData(totalMessageError.join('\n'));
     } else {
-      await this.alertRoseDataOk('Your new rose is in your garden. 🌹')
+      await this.alertRoseDataOk('Rose data saved. 🌹')
     }
 
     return correct;
@@ -212,10 +212,79 @@ export class Tab1Page implements OnInit {
     await alert.present();
   }
 
-  editRose(rose: IRose) {
+  // update rose
+  async updateRose(rose: IRose) {
+    this.authService.getUserId().subscribe(async userId => {
 
+      const alert = await this.alertCtrl.create({
+        header: 'Update Rose',
+        inputs: [
+          {
+            type: 'text',
+            placeholder: 'Name',
+            value: rose.name,
+            attributes: {
+              required: true,
+              minlength: 2,
+              maxlength: 12
+            }
+          },
+          {
+            type: 'number',
+            placeholder: 'Cuttings',
+            value: rose.cuttings,
+            attributes: {
+              required: true,
+              max: 100
+            }
+          },
+          {
+            type: 'number',
+            placeholder: 'Fragrance (0 to 10)',
+            value: rose.intensityFragrance,
+            attributes: {
+              max: 10
+            }
+          },
+          {
+            type: 'textarea',
+            placeholder: 'Description',
+            value: rose.moreInfo,
+            attributes: {
+              required: true,
+              maxlength: 30
+            }
+          }
+        ],
+        buttons: [
+          {
+            text: 'Update',
+            handler: async (roseData: any) => {
+              if (await this.validateInputs(roseData)) {
+                const updatedRose: IRose = {
+                  name: roseData[0],
+                  intensityFragrance: roseData[1],
+                  cuttings: roseData[2],
+                  moreInfo: roseData[3],
+                  addedAt: Timestamp.now(),
+                  userId: userId,
+                  id: rose.id
+                };
+                await this.myRoseGardenService.updateRose(updatedRose);
+              }
+            }
+          },
+          {
+            text: 'Cancel',
+            role: 'cancel'
+          }
+        ]
+      });
+      await alert.present();
+    });
   }
 
+  // delete rose
   deleteRose(rose: IRose) {
     this.myRoseGardenService.deleteRose(rose).then(r => {
       console.log("Rose deleted successfully");
@@ -248,7 +317,7 @@ export class Tab1Page implements OnInit {
   async deleteRoseMessageOk() {
     const alert = await this.alertController.create({
       header: 'Rose deleted',
-      message: 'Your rose is no longer in your garden.',
+      message: 'This rose is no longer in your garden.',
       buttons: [
         {
           text: 'OK',
@@ -276,5 +345,4 @@ export class Tab1Page implements OnInit {
     })
     await alert.present();
   }
-
 }

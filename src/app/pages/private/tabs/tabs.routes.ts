@@ -1,4 +1,4 @@
-import { TabsPage } from './tabs.page';
+import {TabsPage} from './tabs.page';
 import {Routes} from "@angular/router";
 
 export const routes: Routes = [
