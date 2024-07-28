@@ -27,8 +27,6 @@ export class TabsPage implements OnInit {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      console.log('ruta actual: ', this.router.url);
-
       let currentRoute = this.route.root;
       while (currentRoute.children && currentRoute.children.length > 0) {
         currentRoute = currentRoute.children[0];
