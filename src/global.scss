@@ -48,18 +48,31 @@
 }
 
 .info-window {
-  font-family: Arial, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-  color: black; /* Always set text color to black */
+  h2 {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
 
+  p {
+    font-size: 14px;
+    margin: 4px 0;
+    color: #555;
+  }
+
+  button {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Some padding */
+    border: none; /* Remove borders */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer/hand icon on hover */
+    font-size: 14px; /* Increase font size */
+  }
+
+  button:hover {
+    background-color: #45a049; /* Darker green on hover */
+  }
 }
 
-.info-window h2 {
-  font-size: 16px;
-  margin: 0 0 5px;
-}
-
-.info-window p {
-  margin: 0;
-}

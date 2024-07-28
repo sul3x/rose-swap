@@ -22,7 +22,9 @@ export class Tab2Page implements AfterViewInit {
     { lat: 41.3851, lng: 2.1734, description: 'Barcelona' },
     { lat: 41.9831, lng: 2.8249, description: 'Girona' },
     { lat: 41.1200, lng: 1.2453, description: 'Tarragona' },
-    { lat: 41.6176, lng: 0.6200, description: 'Lleida' }
+    { lat: 41.6176, lng: 0.6200, description: 'Lleida' },
+    { lat: 41.5650, lng: 2.0238, description: 'Sabadell' },
+    { lat: 41.4720, lng: 2.0843, description: 'Mataró' }
   ];
 
   constructor() { }
@@ -64,9 +66,19 @@ export class Tab2Page implements AfterViewInit {
             <h2>${location.description}</h2>
             <p>Latitude: ${location.lat}</p>
             <p>Longitude: ${location.lng}</p>
+            <button id="info-button-${location.lat}-${location.lng}">View Garden</button>
           `;
           this.infoWindow.setContent(infoContent);
           this.infoWindow.open(this.map, advancedMarker);
+
+          setTimeout(() => {
+            const button = document.getElementById(`info-button-${location.lat}-${location.lng}`);
+            if (button) {
+              button.addEventListener('click', () => {
+                console.log(`Button clicked at ${location.description}`);
+              });
+            }
+          }, 300); // Adjust the delay as needed
         });
 
         console.log(`Advanced marker added at ${location.description}`);
