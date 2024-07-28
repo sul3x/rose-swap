@@ -53,3 +53,6 @@ import 'zone.js';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import 'zone.js';  // Included with Angular CLI.
+
+// Add more polyfills as required.

@@ -1,8 +1,7 @@
-import {Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, OnInit} from '@angular/core';
-import { GoogleMap } from '@capacitor/google-maps';
-import { environment } from '../../../../environments/environment';
-import {IonContent, IonHeader, IonTitle, IonToolbar} from "@ionic/angular/standalone";
-import {HeaderComponent} from "../../../shared/components/header/header.component";
+/// <reference types="@types/google.maps" />
+import { Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/angular/standalone";
+import { HeaderComponent } from "../../../shared/components/header/header.component";
 
 @Component({
   selector: 'app-tab2',
@@ -15,33 +14,77 @@ import {HeaderComponent} from "../../../shared/components/header/header.componen
 export class Tab2Page implements AfterViewInit {
 
   @ViewChild('map') mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
 
-  constructor() {
+  map: google.maps.Map;
+  infoWindow: google.maps.InfoWindow;
+
+  locations = [
+    { lat: 41.3851, lng: 2.1734, description: 'Barcelona' },
+    { lat: 41.9831, lng: 2.8249, description: 'Girona' },
+    { lat: 41.1200, lng: 1.2453, description: 'Tarragona' },
+    { lat: 41.6176, lng: 0.6200, description: 'Lleida' },
+    { lat: 41.5650, lng: 2.0238, description: 'Sabadell' },
+    { lat: 41.4720, lng: 2.0843, description: 'Mataró' }
+  ];
+
+  constructor() { }
+
+  ngAfterViewInit() {
+    this.loadMap();
   }
 
-  async ngAfterViewInit() {
-    await this.createMap();
+  loadMap() {
+    const mapOptions: google.maps.MapOptions = {
+      center: { lat: 41.3851, lng: 2.1734 }, // Center the map on Barcelona
+      zoom: 8,
+      mapId: '23f6c636fa364436' // Your Map ID here
+    };
+
+    this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
+    this.infoWindow = new google.maps.InfoWindow();
+    this.addAdvancedMarkers();
   }
 
-  async createMap() {
-    console.log('Creating map...');
-    try {
-      this.newMap = await GoogleMap.create({
-        id: 'my-cool-map',
-        element: this.mapRef.nativeElement,
-        apiKey: environment.apiKey,
-        config: {
-          center: {
-            lat: 33.6,
-            lng: -117.9,
-          },
-          zoom: 8,
-        },
+  addAdvancedMarkers() {
+    if (google.maps.marker.AdvancedMarkerElement) {
+      console.log('AdvancedMarkerElement is available');
+      this.locations.forEach(location => {
+        const markerContent = document.createElement('div');
+        markerContent.className = 'custom-marker';
+        markerContent.innerHTML = `<img src="assets/icon/my-garden-marker-green.svg" alt="${location.description}">`; // Predefined icon path
+
+        const advancedMarker = new google.maps.marker.AdvancedMarkerElement({
+          position: { lat: location.lat, lng: location.lng },
+          map: this.map,
+          content: markerContent
+        });
+
+        advancedMarker.addListener('click', () => {
+          const infoContent = document.createElement('div');
+          infoContent.className = 'info-window';
+          infoContent.innerHTML = `
+            <h2>${location.description}</h2>
+            <p>Latitude: ${location.lat}</p>
+            <p>Longitude: ${location.lng}</p>
+            <button id="info-button-${location.lat}-${location.lng}">View Garden</button>
+          `;
+          this.infoWindow.setContent(infoContent);
+          this.infoWindow.open(this.map, advancedMarker);
+
+          setTimeout(() => {
+            const button = document.getElementById(`info-button-${location.lat}-${location.lng}`);
+            if (button) {
+              button.addEventListener('click', () => {
+                console.log(`Button clicked at ${location.description}`);
+              });
+            }
+          }, 300); // Adjust the delay as needed
+        });
+
+        console.log(`Advanced marker added at ${location.description}`);
       });
-      console.log('Map created successfully');
-    } catch (error) {
-      console.error('Error creating map:', error);
+    } else {
+      console.error('AdvancedMarkerElement is not available');
     }
   }
 }
