@@ -30,9 +30,10 @@ import {
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import { IRose } from "../../../model/interfaces";
 import { addIcons } from "ionicons";
-import { addOutline, trashOutline, pencilOutline } from "ionicons/icons";
+import {addOutline, trashOutline, pencilOutline, rose} from "ionicons/icons";
 import { Timestamp } from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
+import {async} from "rxjs";
 
 @Component({
   selector: 'app-tab1',
@@ -64,9 +65,7 @@ export class Tab1Page implements OnInit {
       pencilOutline
     });
 
-    this.authService.getUserId().subscribe(userId => {
-      this.userId = userId
-    })
+    this.userId = this.authService.getUserId();
   }
 
   ionViewWillEnter() {
@@ -78,9 +77,9 @@ export class Tab1Page implements OnInit {
 
   // add new rose
   async addRose() {
-    this.authService.getUserId().subscribe(async userId => {
 
-      if (!userId) {
+
+      if (!this.userId) {
         console.error('No user ID found.');
         return;
       }
@@ -132,9 +131,9 @@ export class Tab1Page implements OnInit {
                   cuttings: roseData[2],
                   moreInfo: roseData[3],
                   addedAt: Timestamp.now(),
-                  userId: userId
+                  userId: this.userId
                 };
-                this.myRoseGardenService.addRose(newRose);
+                await this.myRoseGardenService.addRose(newRose);
                 console.log('rose userId: ', newRose.userId)
               } else {
                 console.error('No user ID found');
@@ -148,9 +147,8 @@ export class Tab1Page implements OnInit {
         ]
       });
       await alert.present();
-      console.log('User ID at addRose:', userId);
-    });
-  }
+      console.log('User ID at addRose:', this.userId)};
+
 
   async validateInputs(roseData) {
 
@@ -214,7 +212,7 @@ export class Tab1Page implements OnInit {
 
   // update rose
   async updateRose(rose: IRose) {
-    this.authService.getUserId().subscribe(async userId => {
+
 
       const alert = await this.alertCtrl.create({
         header: 'Update Rose',
@@ -267,7 +265,7 @@ export class Tab1Page implements OnInit {
                   cuttings: roseData[2],
                   moreInfo: roseData[3],
                   addedAt: Timestamp.now(),
-                  userId: userId,
+                  userId: this.userId,
                   id: rose.id
                 };
                 await this.myRoseGardenService.updateRose(updatedRose);
@@ -281,7 +279,7 @@ export class Tab1Page implements OnInit {
         ]
       });
       await alert.present();
-    });
+
   }
 
   // delete rose

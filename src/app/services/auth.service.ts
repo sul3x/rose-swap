@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from "@angular/fire/auth";
 import {User} from "@firebase/auth-types";
-import {BehaviorSubject, Observable, of, switchMap} from "rxjs";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,6 @@ import {BehaviorSubject, Observable, of, switchMap} from "rxjs";
 export class AuthService {
 
   private userIdSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
-  public userId$: Observable<string | null> = this.userIdSubject.asObservable();
 
   constructor(private auth: Auth) {
     this.auth.onAuthStateChanged((user: User | null) => {
@@ -39,20 +38,11 @@ export class AuthService {
     return signOut(this.auth)
   }
 
-  getUserId2(): Observable<string | null> {
-    return this.userId$;
+  getUserId(): string {
+    return this.auth.currentUser.uid;
   }
 
-  getUserId(): Observable<string | null> {
-    return user(this.auth).pipe(
-      switchMap((authUser: User | null) => {
-        if (authUser) {
-          return of(authUser.uid);
-        } else {
-          return of(null);
-        }
-      })
-    );
-  }
+
+
 }
 

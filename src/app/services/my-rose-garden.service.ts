@@ -10,6 +10,7 @@ import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
 import {AuthService} from "./auth.service";
 import {take} from "rxjs/operators";
+import {rose} from "ionicons/icons";
 
 @Injectable({
   providedIn: 'root'
@@ -32,16 +33,13 @@ export class MyRoseGardenService {
   }*/
 
   getMyGardenFirestore(): Observable<IRose[]> {
-    return this.authService.getUserId().pipe(
-      take(1),
-      switchMap(userId => {
+
         const myGardenRef = collection(this.firestore, 'mygarden');
         const myGardenOrderByDesc = query(myGardenRef,
-          where('userId', '==', userId),
+          where('userId', '==', this.authService.getUserId()),
           orderBy('addedAt', 'desc'));
         return collectionData(myGardenOrderByDesc, { idField: 'id' }) as Observable<IRose[]>;
-      })
-    );
+
   }
   async addRose(rose: IRose) {
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');

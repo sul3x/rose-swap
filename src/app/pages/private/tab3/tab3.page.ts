@@ -37,7 +37,7 @@ export class Tab3Page implements OnInit {
 
   async ngOnInit() {
     try {
-      this.userId = await firstValueFrom(this.authService.getUserId());
+      this.userId = this.authService.getUserId();
       if (this.userId) {
         const userProfile = await this.userProfileService.getUserProfile(this.userId);
         if (userProfile) {
