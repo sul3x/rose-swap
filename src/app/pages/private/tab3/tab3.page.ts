@@ -118,4 +118,8 @@ export class Tab3Page implements OnInit {
   get aboutMe() {
     return this.profileForm.get('aboutMe');
   }
+
+  changeImage() {
+
+  }
 }

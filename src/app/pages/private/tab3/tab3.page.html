@@ -1,6 +1,18 @@
 <ion-content class="ion-padding">
   <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
     <ion-item fill="solid" class="ion-margin-bottom">
+      <div class="preview">
+        <ion-avatar (click)="changeImage()">
+          <img *ngIf="profileData?.imageUrl; else placeholder_avatar;" [src]="profileData.imageUrl"/>
+          <ng-template #placeholder_avatar>
+            <div class="fallback">
+              <p>Select avatar</p>
+            </div>
+          </ng-template>
+        </ion-avatar>
+      </div>
+    </ion-item>
+    <ion-item fill="solid" class="ion-margin-bottom">
       <ion-input type="text" placeholder="Display Name" formControlName="displayName"></ion-input>
       <ion-note slot="error" *ngIf="(displayName.dirty || displayName.touched) && displayName.errors?.['required']">
         Display name is required
