@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { addDoc, collection, doc, Firestore, getDoc, setDoc } from "@angular/fire/firestore";
+import {addDoc, collection, doc, Firestore, getDoc, getDocs, setDoc} from "@angular/fire/firestore";
 import { UserProfile } from "../model/interfaces";
 
 @Injectable({
@@ -17,5 +17,11 @@ export class UserProfileService {
   async setUserProfile(userProfile: UserProfile) {
     const userProfileDocRef = doc(this.firestore, `userprofile/${userProfile.id}`);
     return setDoc(userProfileDocRef, userProfile, { merge: true });
+  }
+
+  async getUserProfiles(): Promise<UserProfile[]>{
+    const userProfileCollection = collection(this.firestore, 'userprofile');
+    const userProfileDocs = await getDocs(userProfileCollection);
+    return userProfileDocs.docs.map(doc => doc.data() as UserProfile);
   }
 }

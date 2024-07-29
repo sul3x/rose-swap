@@ -17,7 +17,7 @@ export interface UserProfile {
     displayName: string;
     email: string;
     birthDate: string;
-    city: string;
+    city?: string;
     aboutMe?: string;
     pushToken?: string;
     avatarImg?: string;
