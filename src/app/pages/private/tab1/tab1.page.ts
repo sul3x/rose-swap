@@ -31,7 +31,7 @@ import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import { IRose } from "../../../model/interfaces";
 import { addIcons } from "ionicons";
 import {addOutline, trashOutline, pencilOutline, rose} from "ionicons/icons";
-import { Timestamp } from "@angular/fire/firestore";
+import {Timestamp} from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
 import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
 import {PhotoRoseService} from "../../../services/photo-rose.service";
@@ -48,11 +48,9 @@ import {NgIf} from "@angular/common";
 export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
-  protected userId;
-  dataRose = null;
+  protected userId: string;
 
   constructor(
-    private platform: Platform,
     private myRoseGardenService: MyRoseGardenService,
     private alertCtrl: AlertController,
     private authService: AuthService,
@@ -60,8 +58,6 @@ export class Tab1Page implements OnInit {
     private photoRoseService: PhotoRoseService,
     private loadingController: LoadingController
   ) {
-    this.platform = platform;
-
   }
 
   ngOnInit(): void {
@@ -84,9 +80,6 @@ export class Tab1Page implements OnInit {
 
   // add new rose
   async addRose() {
-
-    let idRose: string = this.myRoseGardenService.generateRoseId();
-
     if (!this.userId) {
       console.error('No user ID found.');
       return;
@@ -130,19 +123,11 @@ export class Tab1Page implements OnInit {
       ],
       buttons: [
         {
-          text: 'Photo rose',
-          handler: async () => {
-            await this.changeImageRose(idRose);
-            return false;
-          }
-        },
-        {
-          text: 'Add',
+          text: 'Save',
           handler: async (roseData: any) => {
             if (await this.validateInputs(roseData)) {
               const newRose: IRose = {
-                id: idRose,
-                imageRoseUrl: this.photoRoseService.getImageRoseUrl(),
+                imageRoseUrl: "https://firebasestorage.googleapis.com/v0/b/rose-swap.appspot.com/o/roses%2Fphotobase%2Fmarker-orange-light.svg?alt=media&token=94944928-533e-44db-a025-dae9c030343a",
                 name: roseData[0],
                 intensityFragrance: roseData[1],
                 cuttings: roseData[2],
@@ -197,7 +182,7 @@ export class Tab1Page implements OnInit {
 
   }
 
-  async changeImageRose(idRose: string) {
+  async changeImageRose(rose: IRose) {
     const imageRose = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
@@ -210,7 +195,7 @@ export class Tab1Page implements OnInit {
       const loading = await this.loadingController.create();
       await loading.present();
 
-      const result = await this.photoRoseService.uploadImageRose(imageRose, idRose);
+      const result = await this.photoRoseService.uploadImageRose(imageRose, rose);
       await loading.dismiss();
 
       if (!result) {
@@ -301,8 +286,6 @@ export class Tab1Page implements OnInit {
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const updatedRose: IRose = {
-                  id: rose.id,
-                  imageRoseUrl: this.photoRoseService.getImageRoseUrl(),
                   name: roseData[0],
                   intensityFragrance: roseData[1],
                   cuttings: roseData[2],
@@ -310,6 +293,7 @@ export class Tab1Page implements OnInit {
                   addedAt: Timestamp.now(),
                   userId: this.userId
                 };
+
                 await this.myRoseGardenService.updateRose(updatedRose);
               }
             }
