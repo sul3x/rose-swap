@@ -9,6 +9,8 @@ import {Photo} from '@capacitor/camera';
 })
 export class PhotoAvatarService {
 
+  private imageUrl: string;
+
   constructor(
     private auth: Auth,
     private firestore: Firestore,
@@ -31,8 +33,10 @@ export class PhotoAvatarService {
 
       const imageUrl = await getDownloadURL(storageRef);
       console.log('image url: ', imageUrl);
+      this.imageUrl = imageUrl;
+      return true;
     } catch (e) {
-
+      return null;
     }
   }
 }
