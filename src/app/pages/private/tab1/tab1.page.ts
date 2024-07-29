@@ -78,7 +78,6 @@ export class Tab1Page implements OnInit {
   // add new rose
   async addRose() {
 
-
       if (!this.userId) {
         console.error('No user ID found.');
         return;
@@ -126,6 +125,7 @@ export class Tab1Page implements OnInit {
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const newRose: IRose = {
+                  id: this.myRoseGardenService.generateRoseId(),
                   name: roseData[0],
                   intensityFragrance: roseData[1],
                   cuttings: roseData[2],
@@ -135,7 +135,7 @@ export class Tab1Page implements OnInit {
                 };
                 await this.myRoseGardenService.addRose(newRose);
                 console.log('rose userId: ', newRose.userId);
-                console.log('user id: ', )
+                console.log('roseId: ', newRose.id)
               } else {
                 console.error('No user ID found');
               }
@@ -149,7 +149,6 @@ export class Tab1Page implements OnInit {
       });
       await alert.present();
       console.log('User ID at addRose:', this.userId)};
-
 
   async validateInputs(roseData) {
 
@@ -214,7 +213,6 @@ export class Tab1Page implements OnInit {
   // update rose
   async updateRose(rose: IRose) {
 
-
       const alert = await this.alertCtrl.create({
         header: 'Update Rose',
         inputs: [
@@ -266,8 +264,7 @@ export class Tab1Page implements OnInit {
                   cuttings: roseData[2],
                   moreInfo: roseData[3],
                   addedAt: Timestamp.now(),
-                  userId: this.userId,
-                  id: rose.id
+                  userId: this.userId
                 };
                 await this.myRoseGardenService.updateRose(updatedRose);
               }
