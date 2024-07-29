@@ -286,6 +286,8 @@ export class Tab1Page implements OnInit {
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const updatedRose: IRose = {
+                  id: rose.id,
+                  imageRoseUrl: rose.imageRoseUrl,
                   name: roseData[0],
                   intensityFragrance: roseData[1],
                   cuttings: roseData[2],
