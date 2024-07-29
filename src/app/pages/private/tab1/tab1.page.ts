@@ -134,7 +134,8 @@ export class Tab1Page implements OnInit {
                   userId: this.userId
                 };
                 await this.myRoseGardenService.addRose(newRose);
-                console.log('rose userId: ', newRose.userId)
+                console.log('rose userId: ', newRose.userId);
+                console.log('user id: ', )
               } else {
                 console.error('No user ID found');
               }
