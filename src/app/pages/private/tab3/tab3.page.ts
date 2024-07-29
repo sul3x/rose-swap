@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IonicModule, ToastController } from '@ionic/angular';
+import {IonicModule, LoadingController, ToastController} from '@ionic/angular';
 import { UserProfileService } from '../../../services/user-profile.service';
 import { UserProfile } from '../../../model/interfaces';
-import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../services/auth.service';
 import {Router} from "@angular/router";
+import {PhotoAvatarService} from "../../../services/photo-avatar.service";
+import {AlertController} from "@ionic/angular/standalone";
+import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
 
 @Component({
   selector: 'app-tab3',
@@ -19,19 +21,28 @@ export class Tab3Page implements OnInit {
   profileForm: FormGroup;
   userId: string;
   userEmail: string; // To store the email separately
+  profileData = null;
 
   constructor(
     private fb: FormBuilder,
     private userProfileService: UserProfileService,
     private authService: AuthService, // Assuming you have an AuthService to get the user ID
     private toastController: ToastController,
-    private router: Router // Inject ToastController
+    private router: Router, // Inject ToastController
+    private photoAvatarService: PhotoAvatarService,
+    private loadingController: LoadingController,
+    private alertController: AlertController
   ) {
+
     this.profileForm = this.fb.group({
       displayName: ['', [Validators.required]],
       birthDate: ['', [Validators.required]],
       city: ['', [Validators.required]],
       aboutMe: [''] // Optional field, initially empty
+    });
+
+    this.photoAvatarService.getUserProfileData().subscribe(data => {
+      this.profileData = data;
     });
   }
 
@@ -65,7 +76,8 @@ export class Tab3Page implements OnInit {
         email: this.userEmail, // Use the stored email value
         birthDate: this.profileForm.get('birthDate').value,
         city: this.profileForm.get('city').value,
-        aboutMe: this.profileForm.get('aboutMe').value
+        aboutMe: this.profileForm.get('aboutMe').value,
+        avatarImg: this.photoAvatarService.getAvatarImgURL().toString()
       };
 
       try {
@@ -107,5 +119,32 @@ export class Tab3Page implements OnInit {
 
   get aboutMe() {
     return this.profileForm.get('aboutMe');
+  }
+
+  async changeImage() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos,
+    });
+    console.log('new image: ', image);
+
+    if (image) {
+      const loading = await this.loadingController.create();
+      await loading.present();
+
+      const result = await this.photoAvatarService.uploadImage(image);
+      await loading.dismiss();
+
+      if (!result) {
+        const alert = await this.alertController.create({
+          header: 'Upload failed',
+          message: 'There was a problem uploading your avatar.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
+    }
   }
 }
