@@ -77,7 +77,7 @@ export class Tab3Page implements OnInit {
         birthDate: this.profileForm.get('birthDate').value,
         city: this.profileForm.get('city').value,
         aboutMe: this.profileForm.get('aboutMe').value,
-        avatarImg: this.photoAvatarService.getAvatarImgURL().toString()
+        avatarImg: this.photoAvatarService.getAvatarImgURL()
       };
 
       try {

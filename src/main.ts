@@ -12,6 +12,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import {getStorage, provideStorage} from "@angular/fire/storage";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 
 defineCustomElements(window);
 

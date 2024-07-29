@@ -33,28 +33,35 @@ import { addIcons } from "ionicons";
 import {addOutline, trashOutline, pencilOutline, rose} from "ionicons/icons";
 import { Timestamp } from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
-import {async} from "rxjs";
+import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
+import {PhotoRoseService} from "../../../services/photo-rose.service";
+import {LoadingController} from "@ionic/angular";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-tab1',
   templateUrl: 'tab1.page.html',
   styleUrls: ['tab1.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonButtons, IonFab, IonFabButton, IonIcon, IonThumbnail],
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonRow, IonList, IonItem, IonLabel, IonButton, IonAlert, IonInput, IonImg, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonModal, IonButtons, IonFab, IonFabButton, IonIcon, IonThumbnail, NgIf],
 })
 export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
   protected userId;
+  dataRose = null;
 
   constructor(
     private platform: Platform,
     private myRoseGardenService: MyRoseGardenService,
     private alertCtrl: AlertController,
     private authService: AuthService,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private photoRoseService: PhotoRoseService,
+    private loadingController: LoadingController
   ) {
     this.platform = platform;
+
   }
 
   ngOnInit(): void {
@@ -78,78 +85,85 @@ export class Tab1Page implements OnInit {
   // add new rose
   async addRose() {
 
+    let idRose: string = this.myRoseGardenService.generateRoseId();
 
-      if (!this.userId) {
-        console.error('No user ID found.');
-        return;
-      }
+    if (!this.userId) {
+      console.error('No user ID found.');
+      return;
+    }
 
-      const alert = await this.alertCtrl.create({
-        header: 'Add Rose',
-        inputs: [
-          {
-            type: 'text',
-            placeholder: 'Name',
-            attributes: {
-              required: true,
-              minlength: 2,
-              maxlength: 12
-            }
-          },
-          {
-            type: 'number',
-            placeholder: 'Cuttings',
-            attributes: {
-              required: true,
-              max: 100
-            }
-          },
-          {
-            type: 'number',
-            placeholder: 'Fragrance (0 to 10)',
-            attributes: {
-              max: 10
-            }
-          },
-          {
-            type: 'textarea',
-            placeholder: 'Description',
-            attributes: {
-              required: true,
-              maxlength: 30
+    const alert = await this.alertCtrl.create({
+      header: 'Add Rose',
+      inputs: [
+        {
+          type: 'text',
+          placeholder: 'Name',
+          attributes: {
+            required: true,
+            minlength: 2,
+            maxlength: 12
+          }
+        },
+        {
+          type: 'number',
+          placeholder: 'Cuttings',
+          attributes: {
+            required: true,
+            max: 100
+          }
+        },
+        {
+          type: 'number',
+          placeholder: 'Fragrance (0 to 10)',
+          attributes: {
+            max: 10
+          }
+        },
+        {
+          type: 'textarea',
+          placeholder: 'Description',
+          attributes: {
+            required: true,
+            maxlength: 30
+          }
+        }
+      ],
+      buttons: [
+        {
+          text: 'Photo rose',
+          handler: async () => {
+            await this.changeImageRose(idRose);
+            return false;
+          }
+        },
+        {
+          text: 'Add',
+          handler: async (roseData: any) => {
+            if (await this.validateInputs(roseData)) {
+              const newRose: IRose = {
+                id: idRose,
+                imageRoseUrl: this.photoRoseService.getImageRoseUrl(),
+                name: roseData[0],
+                intensityFragrance: roseData[1],
+                cuttings: roseData[2],
+                moreInfo: roseData[3],
+                addedAt: Timestamp.now(),
+                userId: this.userId
+              };
+              await this.myRoseGardenService.addRose(newRose);
+            } else {
+              console.error('No user ID found');
             }
           }
-        ],
-        buttons: [
-          {
-            text: 'Add',
-            handler: async (roseData: any) => {
-              if (await this.validateInputs(roseData)) {
-                const newRose: IRose = {
-                  name: roseData[0],
-                  intensityFragrance: roseData[1],
-                  cuttings: roseData[2],
-                  moreInfo: roseData[3],
-                  addedAt: Timestamp.now(),
-                  userId: this.userId
-                };
-                await this.myRoseGardenService.addRose(newRose);
-                console.log('rose userId: ', newRose.userId);
-                console.log('user id: ', )
-              } else {
-                console.error('No user ID found');
-              }
-            }
-          },
-          {
-            text: 'Cancel',
-            role: 'cancel'
-          }
-        ]
-      });
-      await alert.present();
-      console.log('User ID at addRose:', this.userId)};
-
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        }
+      ]
+    });
+    await alert.present();
+    console.log('User ID at addRose:', this.userId)};
 
   async validateInputs(roseData) {
 
@@ -183,6 +197,33 @@ export class Tab1Page implements OnInit {
 
   }
 
+  async changeImageRose(idRose: string) {
+    const imageRose = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos,
+    });
+    console.log('new image rose: ', imageRose);
+
+    if (imageRose) {
+      const loading = await this.loadingController.create();
+      await loading.present();
+
+      const result = await this.photoRoseService.uploadImageRose(imageRose, idRose);
+      await loading.dismiss();
+
+      if (!result) {
+        const alert = await this.alertController.create({
+          header: 'Upload failed',
+          message: 'There was a problem uploading your new photo rose.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
+    }
+  }
+
   async alertRoseData(totalMessageError) {
     const alert = await this.alertController.create({
       header: 'We encountered some issues with your input:',
@@ -213,7 +254,6 @@ export class Tab1Page implements OnInit {
 
   // update rose
   async updateRose(rose: IRose) {
-
 
       const alert = await this.alertCtrl.create({
         header: 'Update Rose',
@@ -261,13 +301,14 @@ export class Tab1Page implements OnInit {
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const updatedRose: IRose = {
+                  id: rose.id,
+                  imageRoseUrl: this.photoRoseService.getImageRoseUrl(),
                   name: roseData[0],
                   intensityFragrance: roseData[1],
                   cuttings: roseData[2],
                   moreInfo: roseData[3],
                   addedAt: Timestamp.now(),
-                  userId: this.userId,
-                  id: rose.id
+                  userId: this.userId
                 };
                 await this.myRoseGardenService.updateRose(updatedRose);
               }

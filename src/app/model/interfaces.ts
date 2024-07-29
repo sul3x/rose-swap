@@ -1,9 +1,8 @@
-import {Photo} from "@capacitor/camera";
 import {Timestamp} from '@angular/fire/firestore';
 
 export interface IRose {
   id?: string;
-  //photo: Photo;
+  imageRoseUrl?: string;
   name: string;
   cuttings: number;
   intensityFragrance: number;

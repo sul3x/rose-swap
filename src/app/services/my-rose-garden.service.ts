@@ -17,8 +17,10 @@ import {rose} from "ionicons/icons";
 })
 export class MyRoseGardenService {
 
-  constructor(private firestore: Firestore,
-              private authService: AuthService) {
+  constructor(
+    private firestore: Firestore,
+    private authService: AuthService
+    ){
   }
 
   /*
@@ -42,6 +44,7 @@ export class MyRoseGardenService {
 
   }
   async addRose(rose: IRose) {
+    console.log('rose.id', rose.id);
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
     return addDoc(myGardenFirestoreRef, rose);
   }
@@ -67,5 +70,15 @@ export class MyRoseGardenService {
       intensityFragrance: rose.intensityFragrance,
       moreInfo: rose.moreInfo
     });
+  }
+
+  generateRoseId(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    for (let i = 0; i < 100; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      result += chars[randomIndex];
+    }
+    return result;
   }
 }
