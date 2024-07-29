@@ -23,4 +23,8 @@ export const routes: Routes = [
     path: 'myaccount',
     loadComponent: () => import('./pages/private/myaccount/myaccount.page').then( m => m.MyaccountPage)
   },
+  {
+    path: 'other-garden/:uid',
+    loadComponent: () => import('./pages/private/other-gardens/other-gardens.page').then( m => m.OtherGardensPage)
+  },
 ];

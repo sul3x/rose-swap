@@ -43,6 +43,14 @@ export class MyRoseGardenService {
         return collectionData(myGardenOrderByDesc, { idField: 'id' }) as Observable<IRose[]>;
 
   }
+
+  getUeserGardenFirestore(uid: string): Observable<IRose[]> {
+    const myGardenRef = collection(this.firestore, 'mygarden');
+    const myGardenOrderByDesc = query(myGardenRef,
+      where('userId', '==', uid),
+      orderBy('addedAt', 'desc'));
+    return collectionData(myGardenOrderByDesc, { idField: 'id' }) as Observable<IRose[]>;
+  }
   async addRose(rose: IRose) {
     console.log('rose.id', rose.id);
     const myGardenFirestoreRef = collection(this.firestore, 'mygarden');
