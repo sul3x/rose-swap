@@ -36,7 +36,7 @@ export class Tab2Page implements AfterViewInit {
     const mapOptions: google.maps.MapOptions = {
       center: { lat: 41.3851, lng: 2.1734 },
       zoom: 8,
-      mapId: '8d3f0a5abd18f36a'
+      mapId: '23f6c636fa364436'
     };
 
     if (this.mapRef && this.mapRef.nativeElement) {
@@ -52,12 +52,13 @@ export class Tab2Page implements AfterViewInit {
     try {
       const userProfiles = await this.userProfileService.getUserProfiles();
       await Promise.all(userProfiles.map(profile => this.processUserProfile(profile)));
+      console.log('All user profiles have been processed.');
     } catch (error) {
       console.error('Error fetching user profiles:', error);
     }
   }
 
-  private async processUserProfile(profile: UserProfile) {
+  private async processUserProfile(profile: UserProfile): Promise<void> {
     try {
       console.log(`Processing profile for ${profile.displayName}, city: ${profile.city}`);
       if (!profile.city) {
