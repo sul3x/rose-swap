@@ -94,7 +94,7 @@ export class Tab1Page implements OnInit {
           attributes: {
             required: true,
             minlength: 2,
-            maxlength: 12
+            maxlength: 40
           }
         },
         {
@@ -117,7 +117,7 @@ export class Tab1Page implements OnInit {
           placeholder: 'Description',
           attributes: {
             required: true,
-            maxlength: 30
+            maxlength: 200
           }
         }
       ],
@@ -155,8 +155,8 @@ export class Tab1Page implements OnInit {
     let correct = true;
     let totalMessageError: string[] = [];
 
-    if (!roseData[0] || roseData[0].length < 2 || roseData[0].length > 12) {
-      totalMessageError.push('The name of the rose must be between 2 and 12 characters.');
+    if (!roseData[0] || roseData[0].length < 2 || roseData[0].length > 30) {
+      totalMessageError.push('The name of the rose must be between 2 and 30 characters.');
       correct = false;
     }
     if (!roseData[1] || roseData[1] < 0 || roseData[1] > 100) {
@@ -167,8 +167,8 @@ export class Tab1Page implements OnInit {
       totalMessageError.push('The intensity of fragrance must be between 0 and 10.');
       correct = false;
     }
-    if (!roseData[3] || roseData[3] < 0 || roseData[3] > 30) {
-      totalMessageError.push('The description must be up to 30 characters.');
+    if (!roseData[3] || roseData[3] < 0 || roseData[3] > 80) {
+      totalMessageError.push('The description must be low to 80 characters.');
       correct = false;
     }
 
@@ -250,7 +250,7 @@ export class Tab1Page implements OnInit {
             attributes: {
               required: true,
               minlength: 2,
-              maxlength: 12
+              maxlength: 30
             }
           },
           {
@@ -276,7 +276,7 @@ export class Tab1Page implements OnInit {
             value: rose.moreInfo,
             attributes: {
               required: true,
-              maxlength: 30
+              maxlength: 80
             }
           }
         ],
