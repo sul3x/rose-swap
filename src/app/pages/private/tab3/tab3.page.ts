@@ -20,15 +20,15 @@ import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
 export class Tab3Page implements OnInit {
   profileForm: FormGroup;
   userId: string;
-  userEmail: string; // To store the email separately
+  userEmail: string;
   profileData = null;
 
   constructor(
     private fb: FormBuilder,
     private userProfileService: UserProfileService,
-    private authService: AuthService, // Assuming you have an AuthService to get the user ID
+    private authService: AuthService,
     private toastController: ToastController,
-    private router: Router, // Inject ToastController
+    private router: Router,
     private photoAvatarService: PhotoAvatarService,
     private loadingController: LoadingController,
     private alertController: AlertController
@@ -52,12 +52,12 @@ export class Tab3Page implements OnInit {
       if (this.userId) {
         const userProfile = await this.userProfileService.getUserProfile(this.userId);
         if (userProfile) {
-          this.userEmail = userProfile.email; // Store the email separately
+          this.userEmail = userProfile.email;
           this.profileForm.patchValue({
             displayName: userProfile.displayName,
             birthDate: userProfile.birthDate,
             city: userProfile.city,
-            aboutMe: userProfile.aboutMe || '' // Ensure aboutMe is a string
+            aboutMe: userProfile.aboutMe || ''
           });
         }
       } else {
@@ -73,10 +73,10 @@ export class Tab3Page implements OnInit {
       const updatedProfile: UserProfile = {
         id: this.userId,
         displayName: this.profileForm.get('displayName').value,
-        email: this.userEmail, // Use the stored email value
+        email: this.userEmail,
         birthDate: this.profileForm.get('birthDate').value,
         city: this.profileForm.get('city').value,
-        aboutMe: this.profileForm.get('aboutMe').value || '', // Ensure aboutMe is a string
+        aboutMe: this.profileForm.get('aboutMe').value || '',
         avatarImg: this.photoAvatarService.getAvatarImgURL()
       };
 
@@ -104,7 +104,7 @@ export class Tab3Page implements OnInit {
     await toast.present();
   }
 
-  // Getters for form controls
+
   get displayName() {
     return this.profileForm.get('displayName');
   }
