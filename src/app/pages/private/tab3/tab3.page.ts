@@ -83,7 +83,7 @@ export class Tab3Page implements OnInit {
       try {
         await this.userProfileService.setUserProfile(updatedProfile);
         await this.showToast('Profile saved successfully');
-        await this.router.navigateByUrl('/tabs'); // Navigate to my-garden
+
 
       } catch (error) {
         console.error('Failed to save user profile', error);
