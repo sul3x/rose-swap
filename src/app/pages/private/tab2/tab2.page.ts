@@ -36,13 +36,15 @@ export class Tab2Page implements AfterViewInit {
     const mapOptions: google.maps.MapOptions = {
       center: { lat: 41.3851, lng: 2.1734 },
       zoom: 8,
-      mapId: '23f6c636fa364436'
+      mapId: '8d3f0a5abd18f36a'
     };
 
     if (this.mapRef && this.mapRef.nativeElement) {
       this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
       this.infoWindow = new google.maps.InfoWindow();
       this.addUserProfileMarkers();
+    } else {
+      console.error('Map container not found');
     }
   }
 
@@ -57,6 +59,12 @@ export class Tab2Page implements AfterViewInit {
 
   private async processUserProfile(profile: UserProfile) {
     try {
+      console.log(`Processing profile for ${profile.displayName}, city: ${profile.city}`);
+      if (!profile.city) {
+        console.warn(`No city found for profile: ${profile.displayName}`);
+        return;
+      }
+
       const { lat, lng } = await this.geocodingService.getCoordinates(profile.city).toPromise();
       if (lat && lng) {
         this.addMarker(profile, lat, lng);
@@ -81,7 +89,7 @@ export class Tab2Page implements AfterViewInit {
       this.showInfoWindow(profile, advancedMarker);
     });
 
-    console.log(`Advanced marker added at ${profile.displayName}`);
+    console.log(`Advanced marker added for ${profile.displayName} at (${lat}, ${lng})`);
   }
 
   private createMarkerContent(profile: UserProfile): HTMLElement {
@@ -99,7 +107,7 @@ export class Tab2Page implements AfterViewInit {
     const button = infoContent.querySelector(`#info-button-${profile.id}`);
     if (button) {
       button.addEventListener('click', () => {
-        console.log(`Button clicked at ${profile.displayName}`);
+        console.log(`Button clicked for ${profile.displayName}`);
         this.router.navigate(['/tabs/other-gardens', profile.id]);
       });
     }
