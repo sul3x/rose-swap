@@ -31,6 +31,12 @@ export const routes: Routes = [
         data: {title: 'My Account'}
       },
       {
+        path: 'other-gardens/:uid',
+        loadComponent: () =>
+          import('../other-gardens/other-gardens.page').then((m) => m.OtherGardensPage),
+        data: {title: 'Other Gardens'}
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full',

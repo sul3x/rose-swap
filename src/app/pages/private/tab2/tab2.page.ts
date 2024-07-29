@@ -2,6 +2,7 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { HeaderComponent } from "../../../shared/components/header/header.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-tab2',
@@ -19,15 +20,15 @@ export class Tab2Page implements AfterViewInit {
   infoWindow: google.maps.InfoWindow;
 
   locations = [
-    { lat: 41.3851, lng: 2.1734, description: 'Barcelona' },
-    { lat: 41.9831, lng: 2.8249, description: 'Girona' },
-    { lat: 41.1200, lng: 1.2453, description: 'Tarragona' },
-    { lat: 41.6176, lng: 0.6200, description: 'Lleida' },
-    { lat: 41.5650, lng: 2.0238, description: 'Sabadell' },
-    { lat: 41.4720, lng: 2.0843, description: 'Mataró' }
+    { lat: 41.3851, lng: 2.1734, description: 'Barcelona', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' },
+    { lat: 41.9831, lng: 2.8249, description: 'Girona', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' },
+    { lat: 41.1200, lng: 1.2453, description: 'Tarragona', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' },
+    { lat: 41.6176, lng: 0.6200, description: 'Lleida', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' },
+    { lat: 41.5650, lng: 2.0238, description: 'Sabadell', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' },
+    { lat: 41.4720, lng: 2.0843, description: 'Mataró', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngAfterViewInit() {
     this.loadMap();
@@ -76,6 +77,7 @@ export class Tab2Page implements AfterViewInit {
             if (button) {
               button.addEventListener('click', () => {
                 console.log(`Button clicked at ${location.description}`);
+                this.router.navigate(['/tabs/other-gardens',location.userId],);
               });
             }
           }, 300); // Adjust the delay as needed
