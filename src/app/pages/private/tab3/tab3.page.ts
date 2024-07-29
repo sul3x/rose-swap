@@ -76,7 +76,8 @@ export class Tab3Page implements OnInit {
         email: this.userEmail, // Use the stored email value
         birthDate: this.profileForm.get('birthDate').value,
         city: this.profileForm.get('city').value,
-        aboutMe: this.profileForm.get('aboutMe').value
+        aboutMe: this.profileForm.get('aboutMe').value,
+        avatarImg: this.photoAvatarService.getAvatarImgURL().toString()
       };
 
       try {
@@ -127,7 +128,7 @@ export class Tab3Page implements OnInit {
       resultType: CameraResultType.Base64,
       source: CameraSource.Photos,
     });
-    console.log(image);
+    console.log('new image: ', image);
 
     if (image) {
       const loading = await this.loadingController.create();

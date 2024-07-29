@@ -3,7 +3,7 @@
     <ion-item fill="solid" class="ion-margin-bottom">
       <div class="preview">
         <ion-avatar (click)="changeImage()">
-          <img *ngIf="profileData?.imageUrl; else placeholder_avatar;" [src]="profileData.imageUrl"/>
+          <img *ngIf="profileData?.avatarImg; else placeholder_avatar;" [src]="profileData.avatarImg"/>
           <ng-template #placeholder_avatar>
             <div class="fallback">
               <p>Select avatar</p>
