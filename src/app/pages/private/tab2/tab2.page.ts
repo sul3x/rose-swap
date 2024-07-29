@@ -48,30 +48,28 @@ export class Tab2Page implements AfterViewInit {
 
   private async addUserProfileMarkers() {
     try {
-      const userProfiles: UserProfile[] = await this.userProfileService.getUserProfiles();
-
-      for (const profile of userProfiles) {
-        try {
-          const { lat, lng } = await this.geocodingService.getCoordinates(profile.city).toPromise();
-
-          if (lat && lng) {
-            this.addMarker(profile, lat, lng);
-          } else {
-            console.warn(`Invalid coordinates for profile: ${profile.displayName}`);
-          }
-        } catch (error) {
-          console.error(`Error fetching coordinates for ${profile.city}:`, error);
-        }
-      }
+      const userProfiles = await this.userProfileService.getUserProfiles();
+      await Promise.all(userProfiles.map(profile => this.processUserProfile(profile)));
     } catch (error) {
       console.error('Error fetching user profiles:', error);
     }
   }
 
+  private async processUserProfile(profile: UserProfile) {
+    try {
+      const { lat, lng } = await this.geocodingService.getCoordinates(profile.city).toPromise();
+      if (lat && lng) {
+        this.addMarker(profile, lat, lng);
+      } else {
+        console.warn(`Invalid coordinates for profile: ${profile.displayName}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching coordinates for ${profile.city}:`, error);
+    }
+  }
+
   private addMarker(profile: UserProfile, lat: number, lng: number) {
-    const markerContent = document.createElement('div');
-    markerContent.className = 'custom-marker';
-    markerContent.innerHTML = `<img src="assets/icon/my-garden-marker-green.svg" alt="${profile.displayName}">`;
+    const markerContent = this.createMarkerContent(profile);
 
     const advancedMarker = new google.maps.marker.AdvancedMarkerElement({
       position: { lat, lng },
@@ -80,26 +78,42 @@ export class Tab2Page implements AfterViewInit {
     });
 
     advancedMarker.addListener('click', () => {
-      const infoContent = document.createElement('div');
-      infoContent.className = 'info-window';
-      infoContent.innerHTML = `
-        <h2>${profile.displayName}</h2>
-        <p>Address: ${profile.city}</p>
-        <p>About me: ${profile.aboutMe}</p>
-        <button id="info-button-${profile.id}">View Garden</button>
-      `;
-      this.infoWindow.setContent(infoContent);
-      this.infoWindow.open(this.map, advancedMarker);
-
-      const button = infoContent.querySelector(`#info-button-${profile.id}`);
-      if (button) {
-        button.addEventListener('click', () => {
-          console.log(`Button clicked at ${profile.displayName}`);
-          this.router.navigate(['/tabs/other-gardens', profile.id]);
-        });
-      }
+      this.showInfoWindow(profile, advancedMarker);
     });
 
     console.log(`Advanced marker added at ${profile.displayName}`);
+  }
+
+  private createMarkerContent(profile: UserProfile): HTMLElement {
+    const markerContent = document.createElement('div');
+    markerContent.className = 'custom-marker';
+    markerContent.innerHTML = `<img src="assets/icon/my-garden-marker-green.svg" alt="${profile.displayName}">`;
+    return markerContent;
+  }
+
+  private showInfoWindow(profile: UserProfile, marker: google.maps.marker.AdvancedMarkerElement) {
+    const infoContent = this.createInfoWindowContent(profile);
+    this.infoWindow.setContent(infoContent);
+    this.infoWindow.open(this.map, marker);
+
+    const button = infoContent.querySelector(`#info-button-${profile.id}`);
+    if (button) {
+      button.addEventListener('click', () => {
+        console.log(`Button clicked at ${profile.displayName}`);
+        this.router.navigate(['/tabs/other-gardens', profile.id]);
+      });
+    }
+  }
+
+  private createInfoWindowContent(profile: UserProfile): HTMLElement {
+    const infoContent = document.createElement('div');
+    infoContent.className = 'info-window';
+    infoContent.innerHTML = `
+      <h2>${profile.displayName}</h2>
+      <p>Address: ${profile.city}</p>
+      <p>About me: ${profile.aboutMe}</p>
+      <button id="info-button-${profile.id}">View Garden</button>
+    `;
+    return infoContent;
   }
 }
