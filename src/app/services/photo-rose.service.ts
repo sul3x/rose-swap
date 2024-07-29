@@ -1,35 +1,40 @@
 import { Injectable } from '@angular/core';
-import {Auth} from '@angular/fire/auth';
-import {doc, docData, Firestore, setDoc} from '@angular/fire/firestore';
+import {doc, Firestore, setDoc, Timestamp, updateDoc} from '@angular/fire/firestore';
 import {getDownloadURL, ref, Storage, uploadString} from '@angular/fire/storage';
 import {Photo} from '@capacitor/camera';
+import {IRose} from "../model/interfaces";
 
 @Injectable({
   providedIn: 'root'
 })
 export class PhotoRoseService {
 
-  private imageRoseUrl: string;
+  private imageRoseUrl: string = '';
 
   constructor(
-    private auth: Auth,
-    private firestore: Firestore,
-    private storage: Storage
+    private storage: Storage,
+    private firestore: Firestore
   ) { }
 
-  async uploadImageRose(cameraFile: Photo, idRose: string) {
+  async uploadImageRose(cameraFile: Photo, rose: IRose) {
 
-    console.log('id rose antes del upload: ', idRose);
-
-    const path = `roses/${idRose}/photorose.webp`;
+    console.log('rose id before upload image: ', rose.id);
+    const path = `roses/${rose.id}/photorose.webp`;
     const storageRef = ref(this.storage, path);
 
     try {
       await uploadString(storageRef, cameraFile.base64String, "base64");
       const imageRoseUrl = await getDownloadURL(storageRef);
-      this.imageRoseUrl = imageRoseUrl;
+      console.log('imageRoseUrl: ', imageRoseUrl);
+
+      const roseDocRef = doc(this.firestore, `mygarden/${rose.id}`);
+      await updateDoc(roseDocRef, {
+        imageRoseUrl
+      })
+
       return true;
     } catch (e) {
+      console.error('Error uploading image: ', e);
       return null;
     }
   }
