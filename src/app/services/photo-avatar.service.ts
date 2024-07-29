@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Auth} from '@angular/fire/auth';
 import {doc, docData, Firestore} from '@angular/fire/firestore';
-import {ref, Storage} from '@angular/fire/storage';
+import {ref, Storage, uploadString} from '@angular/fire/storage';
 import {Photo} from '@capacitor/camera';
 
 @Injectable({
@@ -25,5 +25,11 @@ export class PhotoAvatarService {
     const user = this.auth.currentUser;
     const path = `avatars/${user.uid}/photoavatar.webp`;
     const storageRef = ref(this.storage, path);
+
+    try {
+      await uploadString(storageRef, cameraFile.base64String, "base64");
+    } catch (e) {
+
+    }
   }
 }
