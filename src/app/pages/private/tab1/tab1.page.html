@@ -18,7 +18,7 @@
           <ion-card-content>
             <ion-row>
               <ion-item>
-                <ion-thumbnail>
+                <ion-thumbnail (click)="changeImageRose(rose.id)">
                   <img alt="rose" [src]="rose.imageRoseUrl" />
                 </ion-thumbnail>
                 <ion-col>
