@@ -2,7 +2,7 @@ import {Timestamp} from '@angular/fire/firestore';
 
 export interface IRose {
   id?: string;
-  roseImg?: string;
+  imageRoseUrl?: string;
   name: string;
   cuttings: number;
   intensityFragrance: number;
