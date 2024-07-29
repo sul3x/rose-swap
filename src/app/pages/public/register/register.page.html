@@ -33,7 +33,7 @@
     </ion-item>
     <ion-item fill="solid" class="ion-margin-bottom">
       <ion-input type="text" placeholder="City" formControlName="city"></ion-input>
-      <ion-note slot="error" *ngIf="(city.dirty || city.touched) && city.errors">City is required</ion-note>
+
     </ion-item>
 
     <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Create account</ion-button>

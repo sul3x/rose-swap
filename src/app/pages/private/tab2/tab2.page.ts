@@ -2,7 +2,10 @@
 import { Component, ElementRef, ViewChild, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { IonContent, IonHeader, IonTitle, IonToolbar } from "@ionic/angular/standalone";
 import { HeaderComponent } from "../../../shared/components/header/header.component";
-import {Router} from "@angular/router";
+import { Router } from "@angular/router";
+import { UserProfileService } from "../../../services/user-profile.service";
+import { UserProfile } from "../../../model/interfaces";
+import { GeocodingService } from "../../../services/geocoding-service.service";
 
 @Component({
   selector: 'app-tab2',
@@ -14,7 +17,7 @@ import {Router} from "@angular/router";
 })
 export class Tab2Page implements AfterViewInit {
 
-  @ViewChild('map') mapRef: ElementRef<HTMLElement>;
+  @ViewChild('map', { static: false }) mapRef: ElementRef<HTMLElement>;
 
   map: google.maps.Map;
   infoWindow: google.maps.InfoWindow;
@@ -28,7 +31,11 @@ export class Tab2Page implements AfterViewInit {
     { lat: 41.4720, lng: 2.0843, description: 'Mataró', userId: 'wcYZbzsBkDdKXGBQWFvfccKLvEf2' }
   ];
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private userProfileService: UserProfileService,
+    private geocodingService: GeocodingService // Inject GeocodingService
+  ) { }
 
   ngAfterViewInit() {
     this.loadMap();
@@ -41,9 +48,13 @@ export class Tab2Page implements AfterViewInit {
       mapId: '23f6c636fa364436' // Your Map ID here
     };
 
-    this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
-    this.infoWindow = new google.maps.InfoWindow();
-    this.addAdvancedMarkers();
+    if (this.mapRef && this.mapRef.nativeElement) {
+      this.map = new google.maps.Map(this.mapRef.nativeElement, mapOptions);
+      this.infoWindow = new google.maps.InfoWindow();
+      // Commented out the addAdvancedMarkers call as requested
+      // this.addAdvancedMarkers();
+      this.addUserProfileMarkers();
+    }
   }
 
   addAdvancedMarkers() {
@@ -77,7 +88,7 @@ export class Tab2Page implements AfterViewInit {
             if (button) {
               button.addEventListener('click', () => {
                 console.log(`Button clicked at ${location.description}`);
-                this.router.navigate(['/tabs/other-gardens',location.userId],);
+                this.router.navigate(['/tabs/other-gardens', location.userId]);
               });
             }
           }, 300); // Adjust the delay as needed
@@ -89,4 +100,62 @@ export class Tab2Page implements AfterViewInit {
       console.error('AdvancedMarkerElement is not available');
     }
   }
+
+  async addUserProfileMarkers() {
+    try {
+      const userProfiles: UserProfile[] = await this.userProfileService.getUserProfiles();
+
+      for (const profile of userProfiles) {
+        try {
+          const { lat, lng } = await this.geocodingService.getCoordinates(profile.city).toPromise();
+
+          // Check if the coordinates are valid before adding the marker
+          if (lat && lng) {
+            const markerContent = document.createElement('div');
+            markerContent.className = 'custom-marker';
+            markerContent.innerHTML = `<img src="assets/icon/my-garden-marker-green.svg" alt="${profile.displayName}">`; // Predefined icon path
+
+            const advancedMarker = new google.maps.marker.AdvancedMarkerElement({
+              position: { lat, lng },
+              map: this.map,
+              content: markerContent
+            });
+
+            advancedMarker.addListener('click', () => {
+              const infoContent = document.createElement('div');
+              infoContent.className = 'info-window';
+              infoContent.innerHTML = `
+                <h2>${profile.displayName}</h2>
+                <p>Address: ${profile.city}</p>
+                <p>About me: ${profile.aboutMe}</p>
+                <button id="info-button-${profile.id}">View Garden</button>
+              `;
+              this.infoWindow.setContent(infoContent);
+              this.infoWindow.open(this.map, advancedMarker);
+
+              setTimeout(() => {
+                const button = document.getElementById(`info-button-${profile.id}`);
+                if (button) {
+                  button.addEventListener('click', () => {
+                    console.log(`Button clicked at ${profile.displayName}`);
+                    this.router.navigate(['/tabs/other-gardens', profile.id]);
+                  });
+                }
+              }, 300); // Adjust the delay as needed
+            });
+
+            console.log(`Advanced marker added at ${profile.displayName}`);
+          } else {
+            console.warn(`Invalid coordinates for profile: ${profile.displayName}`);
+          }
+        } catch (error) {
+          console.error(`Error fetching coordinates for ${profile.city}:`, error);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching user profiles:', error);
+    }
+  }
+
+
 }
