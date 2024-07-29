@@ -20,4 +20,9 @@ export class PhotoAvatarService {
     const userDocRef = doc(this.firestore, `userprofile/${user.uid}`);
     return docData(userDocRef);
   }
+
+  async uploadImage(cameraFile: Photo) {
+    const user = this.auth.currentUser;
+    const path = `avatars/${user.uid}/photoavatar.webp`;
+  }
 }
