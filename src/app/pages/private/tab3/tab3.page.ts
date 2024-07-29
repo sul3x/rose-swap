@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth.service';
 import {Router} from "@angular/router";
 import {PhotoAvatarService} from "../../../services/photo-avatar.service";
 import {AlertController} from "@ionic/angular/standalone";
+import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
 
 @Component({
   selector: 'app-tab3',
@@ -29,7 +30,7 @@ export class Tab3Page implements OnInit {
     private toastController: ToastController,
     private router: Router, // Inject ToastController
     private photoAvatarService: PhotoAvatarService,
-    private loagingController: LoadingController,
+    private loadingController: LoadingController,
     private alertController: AlertController
   ) {
 
@@ -119,7 +120,30 @@ export class Tab3Page implements OnInit {
     return this.profileForm.get('aboutMe');
   }
 
-  changeImage() {
+  async changeImage() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos,
+    });
+    console.log(image);
 
+    if (image) {
+      const loading = await this.loadingController.create();
+      await loading.present();
+
+      const result = await this.photoAvatarService.uploadImage(image);
+      await loading.dismiss();
+
+      if (!result) {
+        const alert = await this.alertController.create({
+          header: 'Upload failed',
+          message: 'There was a problem uploading your avatar.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      }
+    }
   }
 }
