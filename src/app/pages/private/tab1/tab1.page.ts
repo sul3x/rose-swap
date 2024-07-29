@@ -297,10 +297,19 @@ export class Tab1Page implements OnInit {
         ],
         buttons: [
           {
+            text: 'Photo rose',
+            handler: async () => {
+              await this.changeImageRose(rose.id);
+              return false;
+            }
+          },
+          {
             text: 'Update',
             handler: async (roseData: any) => {
               if (await this.validateInputs(roseData)) {
                 const updatedRose: IRose = {
+                  id: rose.id,
+                  imageRoseUrl: this.photoRoseService.getImageRoseUrl(),
                   name: roseData[0],
                   intensityFragrance: roseData[1],
                   cuttings: roseData[2],
