@@ -30,6 +30,7 @@ export class PhotoAvatarService {
       await uploadString(storageRef, cameraFile.base64String, "base64");
       const imageUrl = await getDownloadURL(storageRef);
       this.imageUrl = imageUrl;
+      console.log(' URL foto avatar: ', imageUrl);
       return true;
     } catch (e) {
       return null;
