@@ -25,5 +25,8 @@ export class UserProfileService {
     return userProfileDocs.docs.map(doc => doc.data() as UserProfile);
   }
 
-
+  async getUserDisplayName(userId: string): Promise<string> {
+    const userProfile = await this.getUserProfile(userId);
+    return userProfile ? userProfile.displayName : '';
+  }
 }
