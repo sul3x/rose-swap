@@ -17,6 +17,7 @@ import {MyRoseGardenService} from "../../../services/my-rose-garden.service";
 import {addIcons} from "ionicons";
 import {arrowBackOutline, mailOutline} from "ionicons/icons";
 import {AlertController} from "@ionic/angular";
+import {UserProfileService} from "../../../services/user-profile.service";
 
 @Component({
   selector: 'app-other-gardens',
@@ -29,11 +30,13 @@ export class OtherGardensPage implements OnInit {
 
   uid: string;
   userGarden: IRose[] = [];
+  ownerNameGarden: string;
 
   constructor(private route: ActivatedRoute,
               private gardenService: MyRoseGardenService,
               private router: Router,
-              private alertController: AlertController) {
+              private alertController: AlertController,
+              private userProfileService: UserProfileService) {
   }
 
   ngOnInit() {
@@ -72,7 +75,10 @@ export class OtherGardensPage implements OnInit {
       } else {
         this.userGarden = myGarden;
       }
+    });
 
+    this.userProfileService.getUserDisplayName(this.uid).then( owner => {
+      this.ownerNameGarden = owner
     });
   }
 
