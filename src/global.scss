@@ -88,3 +88,16 @@
   padding: 20px; /* Increased padding */
   bottom: 60px; /* Adjust to leave space for tabs */
 }
+
+
+.info-window {
+  text-align: center;
+
+  .profile-image {
+    width: 70px;  /* Adjust the size as needed */
+    height: 70px; /* Ensure the height is the same to keep it square */
+    border-radius: 50%;  /* Makes the image round */
+    object-fit: cover;  /* Ensures the image covers the box while maintaining aspect ratio */
+
+  }
+}
