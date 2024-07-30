@@ -3,7 +3,7 @@ import {IonicModule} from "@ionic/angular";
 import {AuthService} from "../../../services/auth.service";
 import {Router, RouterLink} from "@angular/router";
 import {addIcons} from "ionicons";
-import {arrowRedoOutline} from "ionicons/icons";
+import {arrowForwardOutline} from "ionicons/icons";
 import {MenuController} from "@ionic/angular/standalone";
 
 @Component({
@@ -27,7 +27,7 @@ export class SideMenuComponent implements OnInit {
   ngOnInit(): void {
 
     addIcons({
-      arrowRedoOutline
+      arrowForwardOutline
     })
 
   }

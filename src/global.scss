@@ -37,7 +37,7 @@
 @import '@ionic/angular/css/palettes/dark.system.css';
 
 .custom-marker img {
-  width: 50px; /* Adjust the size as needed */
+  width: 50px;
   height: 50px;
 
 }
@@ -57,31 +57,31 @@
   }
 
   button {
-    background-color: #007f00; /* Green background */
-    color: white; /* White text */
-    padding: 10px 20px; /* Some padding */
-    border: none; /* Remove borders */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer/hand icon on hover */
-    font-size: 14px; /* Increase font size */
+    background-color: #5b9b5b;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
   }
 
   button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #5b9b5b;
   }
 }
 
 
 .large-toast {
   --width: 90%;
-  --min-height: 80px; /* Increased height */
+  --min-height: 80px;
   --border-radius: 8px;
   --font-size: 1.2em;
-  --background: #28a745;
+  --background: #5b9b5b;
   --color: white;
   text-align: center;
-  padding: 20px; /* Increased padding */
-  bottom: 60px; /* Adjust to leave space for tabs */
+  padding: 20px;
+  bottom: 60px;
 }
 
 
@@ -89,10 +89,10 @@
   text-align: center;
 
   .profile-image {
-    width: 70px;  /* Adjust the size as needed */
-    height: 70px; /* Ensure the height is the same to keep it square */
-    border-radius: 50%;  /* Makes the image round */
-    object-fit: cover;  /* Ensures the image covers the box while maintaining aspect ratio */
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
 
   }
 }
