@@ -49,7 +49,6 @@ export class Tab1Page implements OnInit {
 
   public myGarden: IRose[] = [];
   protected userId: string;
-  public nameUser: string;
 
   constructor(
     private myRoseGardenService: MyRoseGardenService,
@@ -59,8 +58,6 @@ export class Tab1Page implements OnInit {
     private photoRoseService: PhotoRoseService,
     private loadingController: LoadingController,
   ) {
-    this.obtainName();
-    console.log('name user: ', this.nameUser)
   }
 
   ngOnInit(): void {
@@ -373,11 +370,5 @@ export class Tab1Page implements OnInit {
       ]
     })
     await alert.present();
-  }
-
-  obtainName() {
-
-
-
   }
 }
