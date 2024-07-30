@@ -50,7 +50,8 @@ export class Tab2Page implements AfterViewInit {
 
   private async addUserProfileMarkers() {
     try {
-      const userProfiles = await this.userProfileService.getUserProfiles();
+      const userProfiles = await this.userProfileService.getUserProfiles()
+      ;
       await Promise.all(userProfiles.map(profile => this.processUserProfile(profile)));
       console.log('All user profiles have been processed.');
     } catch (error) {
@@ -118,6 +119,7 @@ export class Tab2Page implements AfterViewInit {
     const infoContent = document.createElement('div');
     infoContent.className = 'info-window';
     infoContent.innerHTML = `
+      <img class="profile-image" src="${profile.avatarImg}" alt="${profile.displayName}">
       <h2>${profile.displayName}</h2>
       <p>Address: ${profile.city}</p>
       <p>About me: ${profile.aboutMe}</p>
