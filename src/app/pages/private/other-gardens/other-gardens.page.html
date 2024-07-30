@@ -1,6 +1,5 @@
 <ion-content [fullscreen]="true">
 
-
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="goBackToMap()"  class="custom-fab-button">
       <ion-icon name="arrow-back-outline"></ion-icon>
@@ -14,37 +13,38 @@
     </ion-fab-button>
   </ion-fab>
 
-
-
-  <!-- SHOW MY GARDEN FIRESTORE -->
+  <!-- SHOW OTHER GARDEN -->
   <ion-list>
     @for (rose of userGarden; track rose) {
       <ion-card>
         <ion-list>
-          <ion-card-header>
-            <ion-card-title>{{ rose.name }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-row>
-              <ion-item>
-                <ion-thumbnail slot="start">
-                  <img alt="rose" [src]="rose.imageRoseUrl" />
-                </ion-thumbnail>
-                <ion-col>
-                  <ion-row>
-                    <ion-label>Fragrance: {{ rose.intensityFragrance }}</ion-label>
-                  </ion-row>
-                  <ion-row>
-                    <ion-label>Cuttings: {{ rose.cuttings }}</ion-label>
-                  </ion-row>
-                  <ion-row>
-                    <ion-label>{{ rose.moreInfo }}</ion-label>
-                  </ion-row>
-
-                </ion-col>
-              </ion-item>
-            </ion-row>
-          </ion-card-content>
+          <div class="custom-card-rose-full">
+            <ion-card-header>
+              <ion-card-title>{{ rose.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <div class="custom-card-rose">
+                  <ion-item>
+                    <ion-thumbnail slot="start">
+                      <img alt="rose" [src]="rose.imageRoseUrl" />
+                    </ion-thumbnail>
+                    <ion-col>
+                      <ion-row>
+                        <ion-label>Fragrance: {{ rose.intensityFragrance }}</ion-label>
+                      </ion-row>
+                      <ion-row>
+                        <ion-label>Cuttings: {{ rose.cuttings }}</ion-label>
+                      </ion-row>
+                      <ion-row>
+                        <ion-label>{{ rose.moreInfo }}</ion-label>
+                      </ion-row>
+                    </ion-col>
+                  </ion-item>
+                </div>
+              </ion-row>
+            </ion-card-content>
+          </div>
         </ion-list>
       </ion-card>
     }

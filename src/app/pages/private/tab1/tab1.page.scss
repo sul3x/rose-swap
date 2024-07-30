@@ -15,11 +15,9 @@ ion-thumbnail {
 
 .custom-card-rose-full {
   background-image: url("../../../../assets/design/background-card-full2.jpg");
-
 }
 
 .custom-card-rose {
-  background-image: url("../../../../assets/design/background-card.jpg");
   border-radius: 8px;
   margin: 10px 0;
   padding: 10px;
@@ -31,8 +29,8 @@ ion-thumbnail {
     overflow: hidden;
 
     img {
-      width: 100px;
-      height: 100px;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       border-radius: 10px;
     }
