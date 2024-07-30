@@ -15,7 +15,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {IRose} from "../../../model/interfaces";
 import {MyRoseGardenService} from "../../../services/my-rose-garden.service";
 import {addIcons} from "ionicons";
-import {arrowBackOutline, arrowRedoOutline, mailOutline, sendOutline} from "ionicons/icons";
+import {arrowBackOutline, mailOutline} from "ionicons/icons";
 import {AlertController} from "@ionic/angular";
 
 @Component({

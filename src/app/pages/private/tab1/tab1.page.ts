@@ -56,7 +56,7 @@ export class Tab1Page implements OnInit {
     private authService: AuthService,
     private alertController: AlertController,
     private photoRoseService: PhotoRoseService,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
   ) {
   }
 

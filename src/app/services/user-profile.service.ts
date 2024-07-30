@@ -24,4 +24,6 @@ export class UserProfileService {
     const userProfileDocs = await getDocs(userProfileCollection);
     return userProfileDocs.docs.map(doc => doc.data() as UserProfile);
   }
+
+
 }

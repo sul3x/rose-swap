@@ -1,18 +1,71 @@
-.custom-fab-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%; /* Makes it circular */
-  background: #28a745; /* Use your custom green color */
-  color: #ffffff; /* Icon color */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 1em;
+ion-fab-button {
+  padding: 10px;
 }
 
+ion-thumbnail {
+  width: 120px;
+  height: 120px;
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
 
-.custom-fab-button ion-icon {
+.custom-card-rose-full {
+  background-image: url("../../../../assets/design/background-card-full2.jpg");
+}
 
-  font-size: 14px; /* Adjust icon size */
+.custom-card-rose {
+  border-radius: 8px;
+  margin: 10px 0;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+
+  ion-thumbnail {
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+
+  ion-button {
+    margin-right: 5px;
+  }
+}
+
+ion-item {
+  --border-width: 0;
+  --inner-border-width: 0;
+}
+
+ion-card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url('../../../../assets/icon/my-garden.svg');
+    background-size: contain;
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+}
+
+ion-button, ion-fab-button {
+  --background: #5b9b5b;
 }

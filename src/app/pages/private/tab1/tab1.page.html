@@ -12,39 +12,43 @@
     @for (rose of myGarden; track rose) {
       <ion-card>
         <ion-list>
-          <ion-card-header>
-            <ion-card-title>{{ rose.name }}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content>
-            <ion-row>
-              <ion-item>
-                <ion-thumbnail (click)="changeImageRose(rose)">
-                  <img alt="rose" [src]="rose.imageRoseUrl" />
-                </ion-thumbnail>
-                <ion-col>
-                  <ion-row>
-                    <ion-label>Fragrance: {{ rose.intensityFragrance }}</ion-label>
-                  </ion-row>
-                  <ion-row>
-                    <ion-label>Cuttings: {{ rose.cuttings }}</ion-label>
-                  </ion-row>
-                  <ion-row>
-                    <ion-label>{{ rose.moreInfo }}</ion-label>
-                  </ion-row>
-                  @if (rose.userId === userId) {
-                    <ion-row>
-                      <ion-button (click)="updateRose(rose)">
-                        <ion-icon name="pencil-outline"></ion-icon>
-                      </ion-button>
-                      <ion-button (click)="deleteRoseAlert(rose)">
-                        <ion-icon name="trash-outline"></ion-icon>
-                      </ion-button>
-                    </ion-row>
-                  }
-                </ion-col>
-              </ion-item>
-            </ion-row>
-          </ion-card-content>
+          <div class="custom-card-rose-full">
+            <ion-card-header>
+              <ion-card-title>{{ rose.name }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-row>
+                <div class="custom-card-rose">
+                  <ion-item >
+                    <ion-thumbnail (click)="changeImageRose(rose)">
+                      <img alt="rose" [src]="rose.imageRoseUrl" />
+                    </ion-thumbnail>
+                    <ion-col>
+                      <ion-row>
+                        <ion-label class="custom-label-fragrance">Fragrance: {{ rose.intensityFragrance }}</ion-label>
+                      </ion-row>
+                      <ion-row>
+                        <ion-label class="custom-label-cuttings">Cuttings: {{ rose.cuttings }}</ion-label>
+                      </ion-row>
+                      <ion-row>
+                        <ion-label class="custom-label-moreinfo">{{ rose.moreInfo }}</ion-label>
+                      </ion-row>
+                      @if (rose.userId === userId) {
+                        <ion-row>
+                          <ion-button (click)="updateRose(rose)">
+                            <ion-icon name="pencil-outline"></ion-icon>
+                          </ion-button>
+                          <ion-button (click)="deleteRoseAlert(rose)">
+                            <ion-icon name="trash-outline"></ion-icon>
+                          </ion-button>
+                        </ion-row>
+                      }
+                    </ion-col>
+                  </ion-item>
+                </div>
+              </ion-row>
+            </ion-card-content>
+          </div>
         </ion-list>
       </ion-card>
     }
