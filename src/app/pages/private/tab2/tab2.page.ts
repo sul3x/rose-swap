@@ -118,8 +118,9 @@ export class Tab2Page implements AfterViewInit {
   private createInfoWindowContent(profile: UserProfile): HTMLElement {
     const infoContent = document.createElement('div');
     infoContent.className = 'info-window';
+    const profileImage = profile.avatarImg ? profile.avatarImg : 'assets/icon/my-garden-marker-green.svg';
     infoContent.innerHTML = `
-      <img class="profile-image" src="${profile.avatarImg}" alt="${profile.displayName}">
+      <img class="profile-image" src="${profileImage}">
       <h2>${profile.displayName}</h2>
       <p>Address: ${profile.city}</p>
       <p>About me: ${profile.aboutMe}</p>
