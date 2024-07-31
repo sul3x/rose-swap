@@ -1,10 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
 import {AuthService} from "../../../services/auth.service";
 import {Router, RouterLink} from "@angular/router";
 import {addIcons} from "ionicons";
 import {arrowForwardOutline} from "ionicons/icons";
-import {MenuController} from "@ionic/angular/standalone";
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonIcon, IonItem, IonLabel, IonList,
+  IonMenu,
+  IonTitle,
+  IonToolbar,
+  MenuController
+} from "@ionic/angular/standalone";
 
 @Component({
   selector: 'app-side-menu',
@@ -12,8 +20,17 @@ import {MenuController} from "@ionic/angular/standalone";
   styleUrls: ['./side-menu.component.scss'],
   standalone: true,
   imports: [
-    IonicModule,
-    RouterLink
+    RouterLink,
+    IonMenu,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel
   ]
 })
 export class SideMenuComponent implements OnInit {

@@ -1,6 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LoadingController, ToastController, AlertController } from '@ionic/angular/standalone';
+import {
+  LoadingController,
+  ToastController,
+  AlertController,
+  IonContent,
+  IonItem,
+  IonAvatar, IonInput, IonNote, IonTextarea, IonButton
+} from '@ionic/angular/standalone';
 import { UserProfileService } from '../../../services/user-profile.service';
 import { UserProfile } from '../../../model/interfaces';
 import { CommonModule } from '@angular/common';
@@ -14,7 +21,7 @@ import { Camera, CameraResultType, CameraSource } from "@capacitor/camera";
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, IonContent, IonItem, IonAvatar, IonInput, IonNote, IonTextarea, IonButton],
 })
 export class Tab3Page implements OnInit {
   profileForm: FormGroup;
