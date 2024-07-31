@@ -40,6 +40,8 @@ export class TabsPage implements OnInit {
         'other-gardens': '../../assets/icon/other-gardens.svg',
         'my-garden-dark' : '../../assets/icon/my-garden-dark.svg',
         'other-gardens-dark': '../../assets/icon/other-gardens-dark.svg',
+        'my-garden-green': '../../assets/icon/my-garden-green.svg',
+        'other-gardens-green': '../../assets/icon/other-gardens-green.svg',
         heartCircleOutline
       });
 
