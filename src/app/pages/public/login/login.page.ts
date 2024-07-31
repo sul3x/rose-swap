@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CommonModule} from "@angular/common";
 import { AuthService } from "../../../services/auth.service";
-import { AlertController, IonicModule, LoadingController } from "@ionic/angular";
+import {
+  AlertController, IonButton,
+  IonContent,
+  IonHeader,
+  IonImg, IonInput, IonItem, IonLabel, IonNote,
+  IonSegment, IonSegmentButton,
+  IonToolbar,
+  LoadingController
+} from "@ionic/angular/standalone";
 import { Router, RouterLink, RouterLinkActive, ActivatedRoute } from "@angular/router";
 import {NgIf} from "@angular/common";
 
@@ -10,12 +19,23 @@ import {NgIf} from "@angular/common";
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   imports: [
-    IonicModule,
     RouterLink,
     RouterLinkActive,
     ReactiveFormsModule,
     FormsModule,
-    NgIf
+    NgIf,
+    CommonModule,
+    IonHeader,
+    IonToolbar,
+    IonImg,
+    IonContent,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonItem,
+    IonInput,
+    IonNote,
+    IonButton
   ],
   standalone: true
 })
