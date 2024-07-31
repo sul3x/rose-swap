@@ -1,4 +1,4 @@
-import {Component, EnvironmentInjector, inject, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent} from '@ionic/angular/standalone';
 import {addIcons} from 'ionicons';
 import {heartCircleOutline} from 'ionicons/icons';
@@ -17,6 +17,7 @@ export class TabsPage implements OnInit {
   isDarkMode: boolean = false;
   public title: string;
   selectedTab: string = '';
+  currentRouteUrl: string;
 
   constructor(private route: ActivatedRoute, private router: Router) {
   }
@@ -31,6 +32,13 @@ export class TabsPage implements OnInit {
         currentRoute = currentRoute.children[0];
       }
       this.title = currentRoute.snapshot.data['title'];
+
+      console.log('current route: ', currentRoute);
+
+      this.currentRouteUrl = this.router.url;
+      console.log('ruta actual: ', this.currentRouteUrl);
+
+      this.updateSelectedTab();
     });
 
     addIcons(
@@ -51,12 +59,17 @@ export class TabsPage implements OnInit {
     });
   }
 
-  selectTab(tab: string) {
-    this.selectedTab = tab;
+  updateSelectedTab() {
+    if (this.currentRouteUrl.includes('/tabs/tab1')) {
+      this.selectedTab = 'my-garden';
+    } else if (this.currentRouteUrl.includes('/tabs/tab2')) {
+      this.selectedTab = 'other-gardens';
+    } else if (this.currentRouteUrl.includes('/tabs/tab3')) {
+      this.selectedTab = 'about-me';
+    }
   }
 
   returnIconMyGarden(): string {
-    let icon: string;
     if (this.selectedTab === 'my-garden') {
       return 'my-garden';
     } else {
@@ -65,7 +78,6 @@ export class TabsPage implements OnInit {
   }
 
   returnIconOtherGardens(): string {
-    let icon: string;
     if (this.selectedTab === 'other-gardens') {
       return 'other-gardens';
     } else {
