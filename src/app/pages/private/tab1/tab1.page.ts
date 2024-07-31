@@ -82,7 +82,6 @@ export class Tab1Page implements OnInit, OnDestroy {
       }
     });
   }
-/*
   ionViewWillEnter() {
     if (this.userId) {
       this.subscribeToGarden();
@@ -91,7 +90,7 @@ export class Tab1Page implements OnInit, OnDestroy {
 
   ionViewWillLeave() {
     this.unsubscribeFromGarden();
-  }*/
+  }
 
   ngOnDestroy(): void {
     this.unsubscribeFromGarden();
