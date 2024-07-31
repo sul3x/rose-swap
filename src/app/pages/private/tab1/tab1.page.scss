@@ -75,3 +75,16 @@ ion-title {
   text-align: center;
   font-size: 25px;
 }
+
+@font-face {
+  font-family: 'font-title';
+  src: url('../../../../assets/fonts/font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ion-card-title {
+  text-align: center;
+  font-style: italic;
+  font-family: font-title, serif;
+}
