@@ -134,7 +134,7 @@ export class Tab3Page implements OnInit {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Base64,
-      source: CameraSource.Photos,
+      source: CameraSource.Prompt,
     });
     console.log('new image: ', image);
 

@@ -187,7 +187,7 @@ export class Tab1Page implements OnInit {
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Base64,
-      source: CameraSource.Photos,
+      source: CameraSource.Prompt,
     });
     console.log('new image rose: ', imageRose);
 
