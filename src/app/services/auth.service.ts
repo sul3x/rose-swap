@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user} from "@angular/fire/auth";
 import {User} from "@firebase/auth-types";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +40,10 @@ export class AuthService {
 
   getUserId(): string {
     return this.auth.currentUser.uid;
+  }
+
+  getUserIdObservable(): Observable<string | null> {
+    return this.userIdSubject.asObservable();
   }
 
 
