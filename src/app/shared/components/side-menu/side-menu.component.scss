@@ -5,3 +5,30 @@ ion-label {
 ion-button {
   --background: #5b9b5b;
 }
+
+@font-face {
+  font-family: 'font-menu';
+  src: url('../../../../assets/fonts/font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ion-title {
+  font-style: italic;
+  font-family: font-menu, serif;
+  font-weight: bold;
+}
+
+/*
+.custom-label-menu {
+
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 30px;
+    height: 15px;
+    background-image: url('../../../../assets/icon/rose-menu.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+}*/
