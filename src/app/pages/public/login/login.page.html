@@ -1,6 +1,8 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>Rose Swap :3</ion-title>
+  <ion-toolbar>
+    <div class="logo">
+      <ion-img src="../../../../assets/logo/logo.png" alt="logo"></ion-img>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -17,11 +19,11 @@
   <form (ngSubmit)="login()" [formGroup]="credentials">
     <ion-item fill="solid" class="ion-margin-bottom">
       <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-      <ion-note slot="error" *ngIf="(email.dirty || email.touched) && email.errors">Email is invalid</ion-note>
+      <ion-note slot="error" *ngIf="(email.dirty) && email.errors">Email is invalid</ion-note>
     </ion-item>
     <ion-item fill="solid" class="ion-margin-bottom">
       <ion-input type="password" placeholder="Password" formControlName="password"></ion-input>
-      <ion-note slot="error" *ngIf="(password.dirty || password.touched) && password.errors">Password needs to be 6 characters</ion-note>
+      <ion-note slot="error" *ngIf="(password.dirty) && password.errors">Password needs to be 6 characters</ion-note>
     </ion-item>
 
     <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Log in</ion-button>
