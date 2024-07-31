@@ -9,14 +9,14 @@ import {
   IonHeader, IonIcon, IonItem, IonLabel,
   IonList, IonRow, IonThumbnail,
   IonTitle,
-  IonToolbar
+  IonToolbar,
+  AlertController
 } from '@ionic/angular/standalone';
 import {ActivatedRoute, Router} from "@angular/router";
 import {IRose} from "../../../model/interfaces";
 import {MyRoseGardenService} from "../../../services/my-rose-garden.service";
 import {addIcons} from "ionicons";
 import {arrowBackOutline, mailOutline} from "ionicons/icons";
-import {AlertController} from "@ionic/angular";
 import {UserProfileService} from "../../../services/user-profile.service";
 
 @Component({

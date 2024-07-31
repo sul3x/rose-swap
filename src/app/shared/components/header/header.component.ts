@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
 import {SideMenuComponent} from "../side-menu/side-menu.component";
 
 @Component({
@@ -7,7 +6,6 @@ import {SideMenuComponent} from "../side-menu/side-menu.component";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [
-    IonicModule,
     SideMenuComponent
   ],
   standalone: true

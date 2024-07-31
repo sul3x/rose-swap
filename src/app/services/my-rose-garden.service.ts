@@ -9,8 +9,6 @@ import {
 import {Observable, switchMap} from "rxjs";
 import {query, orderBy} from '@firebase/firestore';
 import {AuthService} from "./auth.service";
-import {take} from "rxjs/operators";
-import {rose} from "ionicons/icons";
 
 @Injectable({
   providedIn: 'root'
@@ -22,17 +20,6 @@ export class MyRoseGardenService {
     private authService: AuthService
     ){
   }
-
-  /*
-  public async addNewPhotoRose(): Promise<Photo> {
-    const capturedNewRose: Photo = await Camera.getPhoto({
-      resultType: CameraResultType.Uri,
-      source: CameraSource.Camera,
-      quality: 100
-    });
-    console.log('Captured new rose photo: ', capturedNewRose);
-    return capturedNewRose;
-  }*/
 
   getMyGardenFirestore(): Observable<IRose[]> {
 
