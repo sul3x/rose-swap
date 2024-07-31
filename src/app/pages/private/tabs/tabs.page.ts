@@ -16,6 +16,7 @@ import {filter} from "rxjs";
 export class TabsPage implements OnInit {
   isDarkMode: boolean = false;
   public title: string;
+  selectedTab: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router) {
   }
@@ -50,10 +51,25 @@ export class TabsPage implements OnInit {
     });
   }
 
-  initializeTitle() {
-    this.route.url.subscribe(() => {
-      console.log(this.route.firstChild.data);
-    })
+  selectTab(tab: string) {
+    this.selectedTab = tab;
   }
 
+  returnIconMyGarden(): string {
+    let icon: string;
+    if (this.selectedTab === 'my-garden') {
+      return 'my-garden';
+    } else {
+      return this.isDarkMode ? 'my-garden-dark' : 'my-garden';
+    }
+  }
+
+  returnIconOtherGardens(): string {
+    let icon: string;
+    if (this.selectedTab === 'other-gardens') {
+      return 'other-gardens';
+    } else {
+      return this.isDarkMode? 'other-gardens-dark' : 'other-gardens';
+    }
+  }
 }
