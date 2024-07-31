@@ -53,6 +53,7 @@ export class SideMenuComponent implements OnInit {
     try {
       await this.authService.logout();
       console.log('Logged out successfully');
+      await this.menu.close()
       await this.router.navigate(['/login']); // Redirect to login<app-header [title]="title"></app-header>
     } catch (error) {
       console.error('Logout error', error);
