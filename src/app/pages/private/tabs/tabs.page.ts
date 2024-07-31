@@ -57,14 +57,21 @@ export class TabsPage implements OnInit {
     this.selectedTab = tab;
   }
 
-  returnIcon(): string {
+  returnIconMyGarden(): string {
     let icon: string;
-    if (this.isDarkMode) {
-      icon = 'my-garden-dark';
+    if (this.selectedTab === 'my-garden') {
+      return 'my-garden';
     } else {
-      icon = 'my-garden';
+      return this.isDarkMode ? 'my-garden-dark' : 'my-garden';
     }
-    return icon;
   }
 
+  returnIconOtherGardens(): string {
+    let icon: string;
+    if (this.selectedTab === 'other-gardens') {
+      return 'other-gardens';
+    } else {
+      return this.isDarkMode? 'other-gardens-dark' : 'other-gardens';
+    }
+  }
 }
