@@ -48,11 +48,11 @@ ion-item {
 
 ion-card-title {
   font-size: 1.5rem;
-  font-weight: bold;
   color: #333333;
   display: flex;
-  align-items: center;
   margin: 0;
+  font-style: italic;
+  font-family: font-title, serif;
 
   &::before {
     content: '';
@@ -68,4 +68,11 @@ ion-card-title {
 
 ion-button, ion-fab-button {
   --background: #5b9b5b;
+}
+
+@font-face {
+  font-family: 'font-title';
+  src: url('../../../../assets/fonts/font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
