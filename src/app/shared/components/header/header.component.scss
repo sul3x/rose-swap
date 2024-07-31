@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'font-title';
+  src: url('../../../../assets/fonts/font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+ion-title {
+  text-align: center;
+  font-style: italic;
+  font-family: font-title, serif;
+}
