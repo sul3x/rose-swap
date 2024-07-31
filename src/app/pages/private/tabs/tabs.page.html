@@ -4,12 +4,12 @@
   <ion-tabs>
     <ion-tab-bar slot="bottom">
       <ion-tab-button tab="tab1" href="/tabs/tab1" (click)="selectTab('my-garden')" [class.selected]="selectedTab === 'my-garden'">
-        <ion-icon aria-hidden="true" [name]="selectedTab === 'my-garden' ? 'my-garden-green' : 'my-garden'"></ion-icon>
+        <ion-icon aria-hidden="true" [name]="selectedTab === 'my-garden' ? 'my-garden-green' : returnIcon()"></ion-icon>
         <ion-label>My garden</ion-label>
       </ion-tab-button>
 
       <ion-tab-button tab="tab2" href="/tabs/tab2" (click)="selectTab('other-gardens')" [class.selected]="selectedTab === 'other-gardens'">
-        <ion-icon aria-hidden="true" [name]="selectedTab === 'other-gardens' ? 'other-gardens-green' : 'other-gardens'"></ion-icon>
+        <ion-icon aria-hidden="true" [name]="selectedTab === 'other-gardens' ? 'other-gardens-green' : returnIcon()"></ion-icon>
         <ion-label>Other gardens</ion-label>
       </ion-tab-button>
 

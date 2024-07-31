@@ -57,4 +57,14 @@ export class TabsPage implements OnInit {
     this.selectedTab = tab;
   }
 
+  returnIcon(): string {
+    let icon: string;
+    if (this.isDarkMode) {
+      icon = 'my-garden-dark';
+    } else {
+      icon = 'my-garden';
+    }
+    return icon;
+  }
+
 }
