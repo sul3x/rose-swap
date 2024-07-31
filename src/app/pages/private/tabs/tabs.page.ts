@@ -18,6 +18,7 @@ export class TabsPage implements OnInit {
   public environmentInjector = inject(EnvironmentInjector);
   isDarkMode: boolean = false;
   public title: string;
+  selectedTab: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router) {
   }
@@ -52,10 +53,8 @@ export class TabsPage implements OnInit {
     });
   }
 
-  initializeTitle() {
-    this.route.url.subscribe(() => {
-      console.log(this.route.firstChild.data);
-    })
+  selectTab(tab: string) {
+    this.selectedTab = tab;
   }
 
 }
