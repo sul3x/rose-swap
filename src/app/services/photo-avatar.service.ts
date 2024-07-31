@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Auth} from '@angular/fire/auth';
-import {doc, docData, Firestore, setDoc} from '@angular/fire/firestore';
+import {doc, docData, Firestore, setDoc, updateDoc} from '@angular/fire/firestore';
 import {getDownloadURL, ref, Storage, uploadString} from '@angular/fire/storage';
 import {Photo} from '@capacitor/camera';
 @Injectable({
@@ -28,9 +28,15 @@ export class PhotoAvatarService {
 
     try {
       await uploadString(storageRef, cameraFile.base64String, "base64");
-      const imageUrl = await getDownloadURL(storageRef);
-      this.imageUrl = imageUrl;
-      console.log(' URL foto avatar: ', imageUrl);
+      const avatarImg = await getDownloadURL(storageRef);
+      this.imageUrl = avatarImg;
+      console.log(' URL foto avatar: ', avatarImg);
+
+      const userDocRef = doc(this.firestore, `userprofile/${user.uid}`);
+      await updateDoc(userDocRef, {
+        avatarImg
+      })
+
       return true;
     } catch (e) {
       return null;

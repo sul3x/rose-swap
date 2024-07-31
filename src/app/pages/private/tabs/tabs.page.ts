@@ -14,8 +14,6 @@ import {filter} from "rxjs";
   imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonContent, HeaderComponent],
 })
 export class TabsPage implements OnInit {
-
-  public environmentInjector = inject(EnvironmentInjector);
   isDarkMode: boolean = false;
   public title: string;
 
