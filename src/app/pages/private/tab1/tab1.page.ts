@@ -25,7 +25,8 @@ import {
   IonFabButton,
   IonIcon,
   IonThumbnail,
-  AlertController
+  AlertController,
+  LoadingController
 } from '@ionic/angular/standalone';
 import { MyRoseGardenService } from "../../../services/my-rose-garden.service";
 import { IRose } from "../../../model/interfaces";
@@ -35,7 +36,6 @@ import {Timestamp} from "@angular/fire/firestore";
 import { AuthService } from "../../../services/auth.service";
 import {Camera, CameraResultType, CameraSource} from "@capacitor/camera";
 import {PhotoRoseService} from "../../../services/photo-rose.service";
-import {LoadingController} from "@ionic/angular";
 import {NgIf} from "@angular/common";
 
 @Component({

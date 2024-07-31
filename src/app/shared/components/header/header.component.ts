@@ -1,14 +1,30 @@
 import {Component, Input} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
 import {SideMenuComponent} from "../side-menu/side-menu.component";
+
+
+import {
+  IonButton, IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar
+} from "@ionic/angular/standalone";
+
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   imports: [
-    IonicModule,
-    SideMenuComponent
+    SideMenuComponent,
+    IonHeader,
+    IonToolbar,
+    IonContent,
+    IonButton,
+    IonTitle,
+    IonButtons,
+    IonMenuButton
   ],
   standalone: true
 })

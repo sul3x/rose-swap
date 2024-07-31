@@ -1,27 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { AuthService } from "../../../services/auth.service";
-import { AlertController, IonicModule, LoadingController } from "@ionic/angular";
+import {
+  AlertController, IonButton,
+  IonContent,
+  IonHeader,
+  IonImg, IonInput, IonItem, IonLabel, IonNote,
+  IonSegment, IonSegmentButton,
+  IonToolbar,
+  LoadingController
+} from "@ionic/angular/standalone";
 import { Router, RouterLink, RouterLinkActive, ActivatedRoute } from "@angular/router";
 import { NgIf } from "@angular/common";
 import { UserProfileService } from "../../../services/user-profile.service";
 import { UserProfile } from "../../../model/interfaces";
-import { take } from 'rxjs/operators';
-import {get} from "@angular/fire/database";
-import {async} from "rxjs";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
   imports: [
-    IonicModule,
     ReactiveFormsModule,
     RouterLink,
     RouterLinkActive,
     NgIf,
-    FormsModule
+    FormsModule,
+    IonHeader,
+    IonToolbar,
+    IonImg,
+    IonContent,
+    IonSegment,
+    IonSegmentButton,
+    IonLabel,
+    IonItem,
+    IonInput,
+    IonNote,
+    IonButton
   ],
   standalone: true
 })
