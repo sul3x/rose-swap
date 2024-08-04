@@ -31,6 +31,7 @@ export class OtherGardensPage implements OnInit {
   uid: string;
   userGarden: IRose[] = [];
   ownerNameGarden: string;
+  ownerMail: string;
 
   constructor(private route: ActivatedRoute,
               private gardenService: MyRoseGardenService,
@@ -80,10 +81,17 @@ export class OtherGardensPage implements OnInit {
     this.userProfileService.getUserDisplayName(this.uid).then( owner => {
       this.ownerNameGarden = owner
     });
+
+    this.userProfileService.getOwnerMail(this.uid).then( ownerMail => {
+      this.ownerMail = ownerMail
+    })
   }
 
   goBackToMap() {
     this.router.navigate(['/tabs/tab2']);
+  }
 
+  showMailOwner() {
+    console.log(this.ownerMail)
   }
 }
