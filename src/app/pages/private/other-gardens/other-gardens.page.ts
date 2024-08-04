@@ -33,6 +33,7 @@ export class OtherGardensPage implements OnInit, OnDestroy {
   userGarden: IRose[] = [];
   ownerNameGarden: string;
   private gardenSubscription: Subscription;
+  ownerMail: string;
 
   constructor(private route: ActivatedRoute,
               private gardenService: MyRoseGardenService,
@@ -76,6 +77,10 @@ export class OtherGardensPage implements OnInit, OnDestroy {
     this.userProfileService.getUserDisplayName(this.uid).then(owner => {
       this.ownerNameGarden = owner;
     });
+
+    this.userProfileService.getOwnerMail(this.uid).then( ownerMail => {
+      this.ownerMail = ownerMail
+    })
   }
 
   ionViewWillLeave() {
@@ -94,5 +99,9 @@ export class OtherGardensPage implements OnInit, OnDestroy {
 
   goBackToMap() {
     this.router.navigate(['/tabs/tab2']);
+  }
+
+  showMailOwner() {
+    console.log(this.ownerMail)
   }
 }
