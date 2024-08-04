@@ -104,6 +104,13 @@ export class OtherGardensPage implements OnInit, OnDestroy {
   }
 
   showMailOwner() {
-    console.log(this.ownerMail)
+    console.log(this.ownerMail);
+    let email = {
+      to: this.ownerMail,
+      subject: 'Subject of the Email',
+      body: 'Body of the Email',
+      isHtml: true
+    };
+    this.emailComposer.open(email);
   }
 }
