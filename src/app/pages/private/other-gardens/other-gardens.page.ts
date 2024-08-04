@@ -40,7 +40,8 @@ export class OtherGardensPage implements OnInit, OnDestroy {
               private gardenService: MyRoseGardenService,
               private router: Router,
               private alertController: AlertController,
-              private userProfileService: UserProfileService) {
+              private userProfileService: UserProfileService,
+              private emailComposer: EmailComposer) {
   }
 
   ngOnInit() {
