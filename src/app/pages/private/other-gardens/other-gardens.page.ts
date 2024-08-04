@@ -19,6 +19,7 @@ import { addIcons } from "ionicons";
 import { arrowBackOutline, mailOutline } from "ionicons/icons";
 import { UserProfileService } from "../../../services/user-profile.service";
 import { Subscription } from 'rxjs';
+import { Platform } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-other-gardens',
@@ -39,7 +40,8 @@ export class OtherGardensPage implements OnInit, OnDestroy {
               private gardenService: MyRoseGardenService,
               private router: Router,
               private alertController: AlertController,
-              private userProfileService: UserProfileService) {
+              private userProfileService: UserProfileService,
+              private platform: Platform) {
   }
 
   ngOnInit() {
@@ -102,6 +104,15 @@ export class OtherGardensPage implements OnInit, OnDestroy {
   }
 
   showMailOwner() {
-    console.log(this.ownerMail)
+    console.log(this.ownerMail);
+    const recipientEmail = this.ownerMail;
+    const subject = 'Friend from RoseSwap:)';
+    const body = "Hello! ... ";
+
+    let link = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    this.platform.ready().then(() => {
+      window.open(link, '_system');
+    });
   }
 }
