@@ -12,6 +12,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import {getStorage, provideStorage} from "@angular/fire/storage";
+import {EmailComposer} from "@awesome-cordova-plugins/email-composer/ngx";
 
 defineCustomElements(window);
 
@@ -28,6 +29,7 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp({"projectId":"rose-swap","appId":"1:571055760262:web:2848d24ef94983f6c34207","storageBucket":"rose-swap.appspot.com","apiKey":"AIzaSyBOmLFE0gv9EmHKEufhnIGyGObJx5p--nw","authDomain":"rose-swap.firebaseapp.com","messagingSenderId":"571055760262","measurementId":"G-2BY6HGVKSS"})),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    provideStorage(() => getStorage())
+    provideStorage(() => getStorage()),
+    EmailComposer
   ],
 });

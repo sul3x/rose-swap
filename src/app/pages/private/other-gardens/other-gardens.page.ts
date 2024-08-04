@@ -19,6 +19,7 @@ import { addIcons } from "ionicons";
 import { arrowBackOutline, mailOutline } from "ionicons/icons";
 import { UserProfileService } from "../../../services/user-profile.service";
 import { Subscription } from 'rxjs';
+import { EmailComposer } from "@awesome-cordova-plugins/email-composer/ngx";
 
 @Component({
   selector: 'app-other-gardens',
