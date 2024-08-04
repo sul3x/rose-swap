@@ -29,4 +29,9 @@ export class UserProfileService {
     const userProfile = await this.getUserProfile(userId);
     return userProfile ? userProfile.displayName : '';
   }
+
+  async getOwnerMail(userId: string): Promise<string> {
+    const userProfile = await this.getUserProfile(userId);
+    return userProfile ? userProfile.email : '';
+  }
 }
